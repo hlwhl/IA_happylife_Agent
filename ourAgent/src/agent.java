@@ -13,7 +13,8 @@ public class agent extends AbstractNegotiationParty {
 
     @Override
     public Action chooseAction(List<Class<? extends Action>> list) {
-        return null;
+        	System.out.print("aaa");
+    		return null;
     }
 
     @Override
