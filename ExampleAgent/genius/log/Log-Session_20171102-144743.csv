@@ -1,0 +1,4 @@
+1,1,0.5,BoulwareNegotiationParty@3,(Offer  bid:Bid[Food: Chips and Nuts, Drinks: Beer Only, Location: Party Room, Invitations: Custom, Handmade, Music: DJ, Cleanup: Specialized Materials, ])
+1,2,0.5,ConcederNegotiationParty@4,(Offer  bid:Bid[Food: Catering, Drinks: Handmade Cocktails, Location: Party Room, Invitations: Custom, Printed, Music: MP3, Cleanup: Water and Soap, ])
+1,3,0.5,CounterOfferHumanNegotiationParty@5,(Accept  bid:Bid[Food: Catering, Drinks: Handmade Cocktails, Location: Party Room, Invitations: Custom, Printed, Music: MP3, Cleanup: Water and Soap, ])
+ended-no-agreement
