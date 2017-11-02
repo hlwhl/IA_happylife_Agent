@@ -1,3 +1,5 @@
+package cn.test;
+
 import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.actions.Accept;
@@ -14,7 +16,12 @@ import java.util.List;
  * if the utility of the bid is higher than Example Agent's last bid.
  */
 public class ExampleAgent extends AbstractNegotiationParty {
-    private final String description = "Example Agent";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private final String description = "Example Agent";
 
     private Bid lastReceivedOffer; // offer on the table
     private Bid myLastOffer;
@@ -22,10 +29,6 @@ public class ExampleAgent extends AbstractNegotiationParty {
     @Override
     public void init(NegotiationInfo info) {
         super.init(info);
-
-        System.out.println("Discount Factor is " + info.getUtilitySpace().getDiscountFactor());
-        System.out.println("Reservation Value is " + info.getUtilitySpace().getReservationValueUndiscounted());
-
     }
 
     /**
@@ -40,8 +43,8 @@ public class ExampleAgent extends AbstractNegotiationParty {
         // According to Stacked Alternating Offers Protocol list includes
         // Accept, Offer and EndNegotiation actions only.
         double time = getTimeLine().getTime(); // Gets the time, running from t = 0 (start) to t = 1 (deadline).
-        // The time is normalized, so agents need not be
-        // concerned with the actual internal clock.
+                                               // The time is normalized, so agents need not be
+                                               // concerned with the actual internal clock.
 
 
         // First half of the negotiation offering the max utility (the best agreement possible) for Example Agent
@@ -52,8 +55,8 @@ public class ExampleAgent extends AbstractNegotiationParty {
             // Accepts the bid on the table in this phase,
             // if the utility of the bid is higher than Example Agent's last bid.
             if (lastReceivedOffer != null
-                    && myLastOffer != null
-                    && this.utilitySpace.getUtility(lastReceivedOffer) > this.utilitySpace.getUtility(myLastOffer)) {
+                && myLastOffer != null
+                && this.utilitySpace.getUtility(lastReceivedOffer) > this.utilitySpace.getUtility(myLastOffer)) {
 
                 return new Accept(this.getPartyId(), lastReceivedOffer);
             } else {
