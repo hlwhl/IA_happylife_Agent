@@ -366,6 +366,9 @@
             <partyRepItem classPath="/Users/huangyankai/Documents/workapce/javaspace/ExampleAgent/bin/cn/test/ExampleAgent.class">
                 <properties/>
             </partyRepItem>
+            <partyRepItem classPath="/Users/huangyankai/Documents/workapce/gitspace/IA/ExampleAgent/bin/cn/other/SimpleTFTAgent.class">
+                <properties/>
+            </partyRepItem>
         </partyRepItems>
         <domainRepItem/>
         <protocolRepItem/>

@@ -1,0 +1,9 @@
+<?xml version="1.0" ?><Session>
+<NegotiationOutcome lastAction="(Accept  bid:Bid[Food: Chips and Nuts, Drinks: Beer Only, Location: Ballroom, Invitations: Custom, Printed, Music: DJ, Cleanup: Specialized Materials, ])" currentTime="Tue Nov 07 12:01:38 GMT 2017" domain="etc/templates/partydomain/party_domain.xml" runtime="29.438742" bids="331" finalOutcome="-" deadline="180rounds" startingAgent="-">
+<resultsOfAgent finalUtility="0.0" agentClass="agents.anac.y2015.agentBuyogV2.AgentBuyogMain" utilspace="etc/templates/partydomain/party1_utility.xml" discountedUtility="0.0" agent="AgentBuyogMain@12" discount="1.0" agentDesc="ANAC2015-13-Buyog">
+</resultsOfAgent>
+<resultsOfAgent finalUtility="0.0" agentClass="agents.anac.y2010.AgentSmith.AgentSmith" utilspace="etc/templates/partydomain/party2_utility.xml" discountedUtility="0.0" agent="AgentSmith@13" discount="1.0" agentDesc="ANAC 2010 - AgentSmith">
+</resultsOfAgent>
+<resultsOfAgent finalUtility="0.0" agentClass="agents.anac.y2010.Nozomi.Nozomi" utilspace="etc/templates/partydomain/party3_utility.xml" discountedUtility="0.0" agent="Nozomi@14" discount="1.0" agentDesc="ANAC 2010 - Nozomi">
+</resultsOfAgent>
+</NegotiationOutcome></Session>

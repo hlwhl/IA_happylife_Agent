@@ -1,0 +1,9 @@
+<?xml version="1.0" ?><Session>
+<NegotiationOutcome lastAction="(Offer  bid:Bid[Food: 0.09999999999999998, ])" currentTime="Tue Nov 07 11:36:41 GMT 2017" domain="etc/templates/partydomain/party_domain.xml" runtime="1.033594" bids="0" finalOutcome="-" deadline="180rounds" startingAgent="-">
+<resultsOfAgent finalUtility="0.0" agentClass="cn.other.SimpleTFTAgent" utilspace="etc/templates/partydomain/party1_utility.xml" discountedUtility="0.0" agent="SimpleTFTAgent@3" discount="1.0" agentDesc="Agent SimpleTFTAgent">
+</resultsOfAgent>
+<resultsOfAgent finalUtility="0.0" agentClass="agents.anac.y2016.agentlight.AgentLight" utilspace="etc/templates/partydomain/party2_utility.xml" discountedUtility="0.0" agent="AgentLight@4" discount="1.0" agentDesc="ANAC2016 agentLight">
+</resultsOfAgent>
+<resultsOfAgent finalUtility="0.0" agentClass="agents.anac.y2016.atlas3.Atlas32016" utilspace="etc/templates/partydomain/party3_utility.xml" discountedUtility="0.0" agent="Atlas32016@5" discount="1.0" agentDesc="ANAC2016 Atlas3">
+</resultsOfAgent>
+</NegotiationOutcome></Session>

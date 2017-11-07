@@ -1,0 +1,9 @@
+<?xml version="1.0" ?><Session>
+<NegotiationOutcome lastAction="(Accept  bid:Bid[Food: Handmade Food, Drinks: Handmade Cocktails, Location: Your Dorm, Invitations: Plain, Music: Band, Cleanup: Special Equiment, ])" currentTime="Tue Nov 07 11:59:46 GMT 2017" domain="etc/templates/partydomain/party_domain.xml" runtime="7.267331" bids="535" finalOutcome="-" deadline="180rounds" startingAgent="-">
+<resultsOfAgent finalUtility="0.0" agentClass="agents.anac.y2015.agentBuyogV2.AgentBuyogMain" utilspace="etc/templates/partydomain/party1_utility.xml" discountedUtility="0.0" agent="AgentBuyogMain@9" discount="1.0" agentDesc="ANAC2015-13-Buyog">
+</resultsOfAgent>
+<resultsOfAgent finalUtility="0.0" agentClass="agents.anac.y2015.xianfa.XianFaAgent" utilspace="etc/templates/partydomain/party2_utility.xml" discountedUtility="0.0" agent="XianFaAgent@10" discount="1.0" agentDesc="ANAC2015-14-XianFa">
+</resultsOfAgent>
+<resultsOfAgent finalUtility="0.0" agentClass="agents.anac.y2015.AgentNeo.Groupn" utilspace="etc/templates/partydomain/party3_utility.xml" discountedUtility="0.0" agent="Groupn@11" discount="1.0" agentDesc="ANAC2015-15-Neo">
+</resultsOfAgent>
+</NegotiationOutcome></Session>
