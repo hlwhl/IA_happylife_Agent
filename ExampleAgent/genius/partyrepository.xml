@@ -363,10 +363,7 @@
             <partyRepItem classPath="negotiator.parties.FeedbackHillClimber">
                 <properties/>
             </partyRepItem>
-            <partyRepItem classPath="/Users/huangyankai/Documents/workapce/javaspace/ExampleAgent/bin/cn/test/ExampleAgent.class">
-                <properties/>
-            </partyRepItem>
-            <partyRepItem classPath="/Users/huangyankai/Documents/workapce/gitspace/IA/ExampleAgent/bin/cn/other/SimpleTFTAgent.class">
+            <partyRepItem classPath="/Users/huangyankai/Documents/workapce/gitspace/IA/ExampleAgent/bin/cn/main/ExampleAgent.class">
                 <properties/>
             </partyRepItem>
         </partyRepItems>

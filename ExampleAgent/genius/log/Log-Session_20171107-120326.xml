@@ -1,9 +1,0 @@
-<?xml version="1.0" ?><Session>
-<NegotiationOutcome lastAction="(Accept  bid:Bid[Food: Chips and Nuts, Drinks: Handmade Cocktails, Location: Party Room, Invitations: Custom, Printed, Music: MP3, Cleanup: Water and Soap, ])" currentTime="Tue Nov 07 12:06:59 GMT 2017" domain="etc/templates/partydomain/party_domain.xml" runtime="213.480121" bids="330" finalOutcome="Bid[Food: Chips and Nuts, Drinks: Handmade Cocktails, Location: Party Room, Invitations: Custom, Printed, Music: MP3, Cleanup: Water and Soap, ]" deadline="180rounds" timeOfAgreement="0.6187845303867403" startingAgent="-">
-<resultsOfAgent finalUtility="0.7849999999999999" agentClass="agents.anac.y2015.cuhkagent2015.CUHKAgent2015" utilspace="etc/templates/partydomain/party1_utility.xml" discountedUtility="0.7849999999999999" agent="CUHKAgent2015@15" discount="1.0" agentDesc="ANAC2015-2-CUHK">
-</resultsOfAgent>
-<resultsOfAgent finalUtility="0.9285654723948509" agentClass="agents.anac.y2015.agentBuyogV2.AgentBuyogMain" utilspace="etc/templates/partydomain/party2_utility.xml" discountedUtility="0.9285654723948509" agent="AgentBuyogMain@16" discount="1.0" agentDesc="ANAC2015-13-Buyog">
-</resultsOfAgent>
-<resultsOfAgent finalUtility="0.7176566046946408" agentClass="agents.anac.y2010.AgentSmith.AgentSmith" utilspace="etc/templates/partydomain/party3_utility.xml" discountedUtility="0.7176566046946408" agent="AgentSmith@17" discount="1.0" agentDesc="ANAC 2010 - AgentSmith">
-</resultsOfAgent>
-</NegotiationOutcome></Session>
