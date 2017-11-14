@@ -318,9 +318,6 @@
             <partyRepItem classPath="agents.ImmediateAcceptor">
                 <properties/>
             </partyRepItem>
-            <partyRepItem classPath="agents.OptimalBidderSimple">
-                <properties/>
-            </partyRepItem>
             <partyRepItem classPath="agents.FunctionalAcceptor">
                 <properties/>
             </partyRepItem>

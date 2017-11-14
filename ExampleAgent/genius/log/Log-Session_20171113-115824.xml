@@ -1,0 +1,9 @@
+<?xml version="1.0" ?><Session>
+<NegotiationOutcome lastAction="null" currentTime="Mon Nov 13 11:58:25 GMT 2017" domain="etc/templates/partydomain/party_domain.xml" runtime="0.449665" bids="3" finalOutcome="-" deadline="10rounds" startingAgent="-">
+<resultsOfAgent finalUtility="0.0" agentClass="cn.main.ExampleAgent" utilspace="etc/templates/partydomain/party1_utility.xml" discountedUtility="0.0" agent="ExampleAgent@0" discount="1.0" agentDesc="Example Agent">
+</resultsOfAgent>
+<resultsOfAgent finalUtility="0.0" agentClass="agents.ABMPAgent2" utilspace="etc/templates/partydomain/party2_utility.xml" discountedUtility="0.0" agent="ABMPAgent2@1" discount="1.0" agentDesc="Agent ABMPAgent2">
+</resultsOfAgent>
+<resultsOfAgent finalUtility="0.0" agentClass="agents.OptimalBidderSimple" utilspace="etc/templates/partydomain/party3_utility.xml" discountedUtility="0.0" agent="OptimalBidderSimple@2" discount="1.0" agentDesc="Agent OptimalBidderSimple">
+</resultsOfAgent>
+</NegotiationOutcome></Session>
