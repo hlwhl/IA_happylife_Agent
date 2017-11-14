@@ -57,7 +57,7 @@ public class Atlas32016 extends AbstractNegotiationParty
                 System.out.println("\u6700\u7D42\u63D0\u6848\u30D5\u30A7\u30FC\u30BA\u306B\u304A\u3051\u308BAction\u306E\u9078\u629E\u306B\u5931\u6557\u3057\u307E\u3057\u305F");
                 e.printStackTrace();
             }
-        if(validActions.contains(negotiator/actions/Accept) && negotiationStrategy.selectAccept(offeredBid, time))
+        if(validActions.contains(Accept.class) && negotiationStrategy.selectAccept(offeredBid, time))
             return new Accept(getPartyId(), offeredBid);
         if(negotiationStrategy.selectEndNegotiation(time))
             return new EndNegotiation(getPartyId());

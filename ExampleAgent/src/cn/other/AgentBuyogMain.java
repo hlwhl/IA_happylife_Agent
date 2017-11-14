@@ -81,7 +81,7 @@ public class AgentBuyogMain extends AbstractNegotiationParty {
 			if (utilitySpace.getDiscountFactor() < 1.0D && remainingRounds > 3D)
 				return new EndNegotiation(getPartyId());
 		}
-		if (possibleActions.contains(negotiator / actions / Accept) && mostRecentBidsUtility >= acceptanceThreshold
+		if (possibleActions.contains(Accept.class) && mostRecentBidsUtility >= acceptanceThreshold
 				&& mostRecentBidsUtility >= bestAgreeableBidsUtility && remainingRounds <= 3D)
 			return new Accept(getPartyId(), totalHistory.getLastBidDetails().getBid());
 		if (bestAgreeableBidsUtility > acceptanceThreshold) {
@@ -91,7 +91,7 @@ public class AgentBuyogMain extends AbstractNegotiationParty {
 			List bidsInWindow = sortedUtilitySpace.getBidsinRange(range);
 			bestBid = getBestBidFromList(bidsInWindow);
 		}
-		if (possibleActions.contains(negotiator / actions / Accept) && mostRecentBidsUtility >= acceptanceThreshold
+		if (possibleActions.contains(Accept.class) && mostRecentBidsUtility >= acceptanceThreshold
 				&& mostRecentBidsUtility >= bestAgreeableBidsUtility
 				&& mostRecentBidsUtility >= bestBid.getMyUndiscountedUtil()) {
 			return new Accept(getPartyId(), totalHistory.getLastBidDetails().getBid());
