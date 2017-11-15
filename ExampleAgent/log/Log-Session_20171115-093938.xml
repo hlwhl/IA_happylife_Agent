@@ -1,0 +1,9 @@
+<?xml version="1.0" ?><Session>
+<NegotiationOutcome currentTime="Wed Nov 15 09:39:41 GMT 2017" timeOfAgreement="0.9005524861878453" lastAction="(Accept  bid:Bid[Food: Finger-Food, Drinks: Non-Alcoholic, Location: Ballroom, Invitations: Plain, Music: Band, Cleanup: Hired Help, ])" domain="etc/templates/partydomain/party_domain.xml" bids="462" runtime="2.947275338" finalOutcome="Bid[Food: Finger-Food, Drinks: Non-Alcoholic, Location: Ballroom, Invitations: Plain, Music: Band, Cleanup: Hired Help, ]" startingAgent="-" deadline="180rounds">
+<resultsOfAgent agent="RandomParty@6" agentDesc="Random party" utilspace="etc/templates/partydomain/party1_utility.xml" agentClass="negotiator.parties.RandomParty" finalUtility="0.4716666666666667" discountedUtility="0.4716666666666667" discount="1.0">
+</resultsOfAgent>
+<resultsOfAgent agent="RandomParty2@7" agentDesc="Random party" utilspace="etc/templates/partydomain/party2_utility.xml" agentClass="negotiator.parties.RandomParty2" finalUtility="0.43442251136397303" discountedUtility="0.43442251136397303" discount="1.0">
+</resultsOfAgent>
+<resultsOfAgent agent="BoulwareNegotiationParty@8" agentDesc="Deadline-based boulware agent" utilspace="etc/templates/partydomain/party3_utility.xml" agentClass="negotiator.parties.BoulwareNegotiationParty" finalUtility="0.9161669482493878" discountedUtility="0.9161669482493878" discount="1.0">
+</resultsOfAgent>
+</NegotiationOutcome></Session>

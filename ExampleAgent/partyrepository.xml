@@ -366,6 +366,9 @@
             <partyRepItem classPath="/Users/huangyankai/Documents/workapce/gitspace/IA/ExampleAgent/bin/cn/other/Atlas32016.class">
                 <properties/>
             </partyRepItem>
+            <partyRepItem classPath="/Users/huangyankai/Documents/workapce/gitspace/IA/ExampleAgent/bin/cn/other/Atlas32017.class">
+                <properties/>
+            </partyRepItem>
         </partyRepItems>
         <domainRepItem/>
         <protocolRepItem/>
