@@ -360,10 +360,10 @@
             <partyRepItem classPath="negotiator.parties.FeedbackHillClimber">
                 <properties/>
             </partyRepItem>
-            <partyRepItem classPath="/Users/huangyankai/Documents/workapce/gitspace/IA/ExampleAgent/bin/cn/main/ExampleAgent.class">
+            <partyRepItem classPath="bin/cn/main/ExampleAgent.class">
                 <properties/>
             </partyRepItem>
-            <partyRepItem classPath="/Users/huangyankai/Documents/workapce/gitspace/IA/ExampleAgent/bin/cn/other/Atlas32016.class">
+            <partyRepItem classPath="bin/cn/other/Atlas32016.class">
                 <properties/>
             </partyRepItem>
         </partyRepItems>
