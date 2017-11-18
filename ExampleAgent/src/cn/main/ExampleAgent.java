@@ -10,6 +10,9 @@ import negotiator.parties.NegotiationInfo;
 
 import java.util.List;
 
+import agents.ai2014.group11.OpponentBidHistory;
+import agents.anac.y2012.MetaAgent.agents.WinnerAgent.opponentOffers;
+
 /** ExampleAgent returns the bid that maximizes its own utility for half of the negotiation session. In the second half,
  * it offers a random bid. It only accepts the bid on the table in this phase, if the utility of the bid is higher than
  * Example Agent's last bid. */
@@ -23,6 +26,7 @@ public class ExampleAgent extends AbstractNegotiationParty {
 
 	private Bid lastReceivedOffer; // offer on the table
 	private Bid myLastOffer;
+	private List<Bid> OpponentBidHistory;
 
 	@Override
 	public void init(NegotiationInfo info) {
@@ -36,13 +40,14 @@ public class ExampleAgent extends AbstractNegotiationParty {
 	 * @return */
 	@Override
 	public Action chooseAction(List<Class<? extends Action>> list) {
+		//System.out.println("helloworld66"+list);
 		// According to Stacked Alternating Offers Protocol list includes
 		// Accept, Offer and EndNegotiation actions only.
 		double time = getTimeLine().getTime(); // Gets the time, running from t = 0 (start) to t = 1 (deadline).
 												// The time is normalized, so agents need not be
 												// concerned with the actual internal clock.
 		System.out.println(time);
-
+//		saveOpponentsOffers(lastReceivedOffer);
 		// First half of the negotiation offering the max utility (the best agreement possible) for Example Agent
 		if (1 == 1) {
 			if (lastReceivedOffer != null && this.utilitySpace.getUtility(lastReceivedOffer) == this.utilitySpace.getUtility(this.getMaxUtilityBid())) {
@@ -96,5 +101,9 @@ public class ExampleAgent extends AbstractNegotiationParty {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	private void saveOpponentsOffers(Bid b) {
+		OpponentBidHistory.add(b);
 	}
 }
