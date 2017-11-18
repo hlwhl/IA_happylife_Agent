@@ -366,7 +366,7 @@
             <partyRepItem classPath="bin/cn/other/Atlas32016.class">
                 <properties/>
             </partyRepItem>
-            <partyRepItem classPath="/Users/linwei/eclipse-workspace/IA_happylife/ExampleAgent/bin/cn/main/myAgent.class">
+            <partyRepItem classPath="bin/cn/main/myAgent.class">
                 <properties/>
             </partyRepItem>
         </partyRepItems>
