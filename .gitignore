@@ -10,4 +10,6 @@ target/
 *svn/
 .idea/
 *.jar
+*.csv
+*/log/
 ~*
