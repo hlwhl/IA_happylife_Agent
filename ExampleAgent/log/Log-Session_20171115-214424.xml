@@ -1,7 +1,0 @@
-<?xml version="1.0" ?><Session>
-<NegotiationOutcome currentTime="Wed Nov 15 21:44:26 GMT 2017" timeOfAgreement="0.6740331491712708" lastAction="(Accept  bid:Bid[Pie: a134, ])" domain="etc/templates/pie/pie_domain.xml" bids="242" runtime="1.643851043" finalOutcome="Bid[Pie: a134, ]" startingAgent="-" deadline="180rounds">
-<resultsOfAgent agent="Atlas32016@2" agentDesc="ANAC2016 Atlas3" utilspace="etc/templates/pie/pie_A.xml" agentClass="cn.other.Atlas32016" finalUtility="0.134" discountedUtility="0.134" discount="1.0">
-</resultsOfAgent>
-<resultsOfAgent agent="AgentBuyogMain@3" agentDesc="ANAC2015-13-Buyog" utilspace="etc/templates/pie/pie_B.xml" agentClass="agents.anac.y2015.agentBuyogV2.AgentBuyogMain" finalUtility="0.866" discountedUtility="0.866" discount="1.0">
-</resultsOfAgent>
-</NegotiationOutcome></Session>
