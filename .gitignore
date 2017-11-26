@@ -13,3 +13,4 @@ target/
 *.csv
 */log/
 ~*
+workspace.xml
