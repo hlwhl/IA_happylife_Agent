@@ -1,6 +1,8 @@
 package cn.main;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +19,7 @@ public class MyNegotiationInfo {
 	private List<Object> opponents;
 	private List<Issue> issues;
 	private HashMap<Object, HashMap<Issue, List<Value>>> opponentPrefectOrder;
-	private HashMap<Object, HashMap<Issue, HashMap<Value, Integer>>> opponentFrequency;
+	private HashMap<Object, HashMap<Issue, List<MyValueFrequency>>> opponentFrequency;
 	private HashMap<Object, ArrayList<Bid>> opponentsBidHistory = null;
 	private HashMap<Object, Double> opponentsAverage;
 	private HashMap<Object, Double> opponentsVariance;
@@ -29,7 +31,7 @@ public class MyNegotiationInfo {
 		issues = utilitySpace.getDomain().getIssues();
 		opponents = new ArrayList<Object>();
 		opponentPrefectOrder = new HashMap<Object, HashMap<Issue, List<Value>>>();
-		opponentFrequency = new HashMap<Object, HashMap<Issue, HashMap<Value, Integer>>>();
+		opponentFrequency = new HashMap<Object, HashMap<Issue, List<MyValueFrequency>>>();
 		opponentsBidHistory = new HashMap<Object, ArrayList<Bid>>();
 		opponentsAverage = new HashMap<Object, Double>();
 		opponentsVariance = new HashMap<Object, Double>();
@@ -51,14 +53,17 @@ public class MyNegotiationInfo {
 	}
 
 	private void initOpponentsValueFrequency(Object sender) {
-		HashMap<Issue, HashMap<Value, Integer>> issueMap = new HashMap<Issue, HashMap<Value, Integer>>();
+		HashMap<Issue, List<MyValueFrequency>> issueMap = new HashMap<Issue, List<MyValueFrequency>>();
 		for (Issue issue : issues) {
 			List<Value> values = getValues(issue);
-			HashMap<Value, Integer> valueInteger = new HashMap<Value, Integer>();
+			List<MyValueFrequency> frequencys = new ArrayList<MyValueFrequency>();
 			for (Value value : values) {
-				valueInteger.put(value, 0);
+				MyValueFrequency frequency = new MyValueFrequency();
+				frequency.setValue(value);
+				frequency.setFrequency(0);
+				frequencys.add(frequency);
 			}
-			issueMap.put(issue, valueInteger);
+			issueMap.put(issue, frequencys);
 		}
 		opponentFrequency.put(sender, issueMap);
 	}
@@ -88,13 +93,13 @@ public class MyNegotiationInfo {
 	
 	public void printInfo() {
 		System.out.println("round: " + round);
-		for (Map.Entry<Object, HashMap<Issue, HashMap<Value, Integer>>> oppoId : opponentFrequency.entrySet()) {
-			System.out.println(((AgentID) oppoId.getKey()).getName());
+		for (Map.Entry<Object, HashMap<Issue, List<MyValueFrequency>>> oppoId : opponentFrequency.entrySet()) {
+			System.out.println(((AgentID) oppoId.getKey()).getName() + " :");
 			System.out.println();
-			for (Map.Entry<Issue, HashMap<Value, Integer>> issue : oppoId.getValue().entrySet()) {
-				System.out.println(issue.getKey().getName());
-				for (Map.Entry<Value, Integer> value: issue.getValue().entrySet()) {
-					System.out.println(value.getKey() + " : " + value.getValue());
+			for (Map.Entry<Issue, List<MyValueFrequency>> issues : oppoId.getValue().entrySet()) {
+				System.out.println(issues.getKey().getName());
+				for (MyValueFrequency frequency : issues.getValue()) {
+					System.out.println(frequency.toString());
 				}
 			}
 		}
@@ -110,15 +115,46 @@ public class MyNegotiationInfo {
 	}
 	
 	private void updateFrequencyList(Object sender, Bid offeredBid) {
-		HashMap<Issue, HashMap<Value, Integer>> issueMap = opponentFrequency.get(sender);
+		
+		HashMap<Issue, List<MyValueFrequency>> issueMap = opponentFrequency.get(sender);
 		List<Issue> oIssues = offeredBid.getIssues();
 		for (Issue issue : oIssues) {
-			HashMap<Value, Integer> values = issueMap.get(issue);
+			List<MyValueFrequency> frequencys = issueMap.get(issue);
 			Value value = offeredBid.getValue(issue.getNumber());
-			values.put(value, values.get(value) + 1);
+			for (MyValueFrequency frequency : frequencys) {
+				if (frequency.getValue().equals(value)){
+					frequency.setFrequency(frequency.getFrequency() + 1);
+				}
+			}
+			sort(frequencys);
 		}
 	}
 	
+	private void sort(List<MyValueFrequency> frequencys) {
+		Collections.sort(frequencys, new Comparator<MyValueFrequency>(){
+
+			/*
+			 * int compare(Student o1, Student o2) 返回一个基本类型的整型，
+			 * 返回负数表示：o1 小于o2，
+			 * 返回0 表示：o1和o2相等，
+			 * 返回正数表示：o1大于o2。
+			 */
+			public int compare(MyValueFrequency o1, MyValueFrequency o2) {
+			
+				//降序排列
+				if(o1.getFrequency() < o2.getFrequency()){
+					return 1;
+				}
+				if(o1.getFrequency() == o2.getFrequency()){
+					return 0;
+				}
+				return -1;
+			}
+		}); 
+		
+	}
+
+
 	public ArrayList<Value> getValues(Issue issue) {
 		ArrayList<Value> values = new ArrayList<Value>();
 //		switch (issue.getType()) {
@@ -192,13 +228,56 @@ public class MyNegotiationInfo {
 		this.opponentPrefectOrder = opponentPrefectOrder;
 	}
 
-	public HashMap<Object, HashMap<Issue, HashMap<Value, Integer>>> getOpponentFrequency() {
+
+	public HashMap<Object, HashMap<Issue, List<MyValueFrequency>>> getOpponentFrequency() {
 		return opponentFrequency;
 	}
 
-	public void setOpponentFrequency(HashMap<Object, HashMap<Issue, HashMap<Value, Integer>>> opponentFrequency) {
+
+	public void setOpponentFrequency(HashMap<Object, HashMap<Issue, List<MyValueFrequency>>> opponentFrequency) {
 		this.opponentFrequency = opponentFrequency;
 	}
+
+
+	public HashMap<Object, ArrayList<Bid>> getOpponentsBidHistory() {
+		return opponentsBidHistory;
+	}
+
+
+	public void setOpponentsBidHistory(HashMap<Object, ArrayList<Bid>> opponentsBidHistory) {
+		this.opponentsBidHistory = opponentsBidHistory;
+	}
+
+
+	public HashMap<Object, Double> getOpponentsAverage() {
+		return opponentsAverage;
+	}
+
+
+	public void setOpponentsAverage(HashMap<Object, Double> opponentsAverage) {
+		this.opponentsAverage = opponentsAverage;
+	}
+
+
+	public HashMap<Object, Double> getOpponentsVariance() {
+		return opponentsVariance;
+	}
+
+
+	public void setOpponentsVariance(HashMap<Object, Double> opponentsVariance) {
+		this.opponentsVariance = opponentsVariance;
+	}
+
+
+	public int getNegotiatorNum() {
+		return negotiatorNum;
+	}
+
+
+	public void setNegotiatorNum(int negotiatorNum) {
+		this.negotiatorNum = negotiatorNum;
+	}
+
 
 
 
