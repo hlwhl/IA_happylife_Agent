@@ -9,9 +9,11 @@ import java.util.Map;
 
 import negotiator.AgentID;
 import negotiator.Bid;
+import negotiator.Domain;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
+import negotiator.issue.ValueDiscrete;
 import negotiator.utility.AbstractUtilitySpace;
 
 public class MyNegotiationInfo {
@@ -131,11 +133,15 @@ public class MyNegotiationInfo {
         }
     }
 
-    public void getMaxFrequencyBid(){
+    public Bid getMaxFrequencyBid(){
+        HashMap<Integer,Value> bidP=new HashMap<Integer, Value>();
         for(Map.Entry<Issue,List<MyValueFrequency>> oppoInfo: opponentFrequency.entrySet()){
+            //输出信息
             System.out.println("频次最高"+oppoInfo.getValue().get(0).getValue().toString()+"为"+oppoInfo.getValue().get(0).getFrequency());
-            //TODO:生成最高的bid，目前为输出信息
+            //bid生成
+            bidP.put(oppoInfo.getKey().getNumber(),new ValueDiscrete(oppoInfo.getValue().get(0).toString()));
         }
+        return new Bid(utilitySpace.getDomain(),bidP);
     }
 
 	private void updateFrequencyList(Bid offeredBid) {

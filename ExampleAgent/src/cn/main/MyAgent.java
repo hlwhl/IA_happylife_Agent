@@ -86,8 +86,11 @@ public class MyAgent extends AbstractNegotiationParty {
         if(timeline.getTime()>0.99){
             oppent1Info.printInfo();
             oppent2Info.printInfo();
-            oppent1Info.getMaxFrequencyBid();
-            oppent2Info.getMaxFrequencyBid();
+
+            //生成猜测到的对方最大utility的Bid
+            //TODO:使用最大bid计算
+            Bid max1Bid=oppent1Info.getMaxFrequencyBid();
+            Bid max2Bid=oppent2Info.getMaxFrequencyBid();
         }
 
 //		if (action != null) {
