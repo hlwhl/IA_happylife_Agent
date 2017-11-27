@@ -15,45 +15,54 @@ import negotiator.issue.Value;
 import negotiator.utility.AbstractUtilitySpace;
 
 public class MyNegotiationInfo {
+    private AgentID OppentID;
 	private AbstractUtilitySpace utilitySpace;
-	private List<Object> opponents;
 	private List<Issue> issues;
-	private HashMap<Object, HashMap<Issue, List<Value>>> opponentPrefectOrder;
-	private HashMap<Object, HashMap<Issue, List<MyValueFrequency>>> opponentFrequency;
-	private HashMap<Object, ArrayList<Bid>> opponentsBidHistory = null;
-	private HashMap<Object, Double> opponentsAverage;
-	private HashMap<Object, Double> opponentsVariance;
+    private HashMap<Issue, List<MyValueFrequency>> opponentFrequency;
+
+	//private HashMap<Object, HashMap<Issue, List<Value>>> opponentPrefectOrder;
+
+	private ArrayList<Bid> opponentsBidHistory = null;
+
+	private Double opponentsAverage;
+	private Double opponentsVariance;
+
 	private int round = 0;
-	private int negotiatorNum = 0;
-	
-	public MyNegotiationInfo(AbstractUtilitySpace utilitySpace ){
+
+    private List<MyValueFrequency> frequencys;
+
+    public void setOppentID(AgentID oppentID) {
+        OppentID = oppentID;
+    }
+
+    public AgentID getOppentID() {
+        return OppentID;
+    }
+
+    public MyNegotiationInfo(AbstractUtilitySpace utilitySpace,AgentID id){
 		this.utilitySpace = utilitySpace;
 		issues = utilitySpace.getDomain().getIssues();
-		opponents = new ArrayList<Object>();
-		opponentPrefectOrder = new HashMap<Object, HashMap<Issue, List<Value>>>();
-		opponentFrequency = new HashMap<Object, HashMap<Issue, List<MyValueFrequency>>>();
-		opponentsBidHistory = new HashMap<Object, ArrayList<Bid>>();
-		opponentsAverage = new HashMap<Object, Double>();
-		opponentsVariance = new HashMap<Object, Double>();
+		//opponentPrefectOrder = new HashMap<Object, HashMap<Issue, List<Value>>>();
+		opponentFrequency = new HashMap<Issue, List<MyValueFrequency>>();
+		opponentsBidHistory = new ArrayList<Bid>();
+		opponentsAverage = 0.0D;
+		opponentsVariance = 0.0D;
+		setOppentID(id);
+		initOpponentValueFrequency();
 	}
 
+	public void addOppentHistory(Bid b){
+        opponentsBidHistory.add(b);
+        updateFrequencyList(b);
+    }
 
-	public void updateOpponentsNum(int intValue) {
-		this.negotiatorNum = intValue;
-	}
-	
-	public void updateTimeScale(double time) {
-		round++;
-	}
 
-	public void initOpponent(Object sender) {
-		initNegotiatingInfo(sender);
-		initOpponentsValueFrequency(sender);
-		opponents.add(sender);
-	}
+//	public void initOpponent(Object sender) {
+//		initNegotiatingInfo(sender);
+//		initOpponentValueFrequency(sender);
+//	}
 
-	private void initOpponentsValueFrequency(Object sender) {
-		HashMap<Issue, List<MyValueFrequency>> issueMap = new HashMap<Issue, List<MyValueFrequency>>();
+	private void initOpponentValueFrequency() {
 		for (Issue issue : issues) {
 			List<Value> values = getValues(issue);
 			List<MyValueFrequency> frequencys = new ArrayList<MyValueFrequency>();
@@ -63,69 +72,82 @@ public class MyNegotiationInfo {
 				frequency.setFrequency(0);
 				frequencys.add(frequency);
 			}
-			issueMap.put(issue, frequencys);
+			this.opponentFrequency.put(issue, frequencys);
 		}
-		opponentFrequency.put(sender, issueMap);
 	}
 
 
-	private void initNegotiatingInfo(Object sender) {
-		opponentsBidHistory.put(sender, new ArrayList<Bid>());
-		opponentsAverage.put(sender, Double.valueOf(0.0D));
-		opponentsVariance.put(sender, Double.valueOf(0.0D));
-	}
+//	private void initNegotiatingInfo(Object sender) {
+//		opponentsBidHistory.put(sender, new ArrayList<Bid>());
+//		opponentsAverage.put(sender, Double.valueOf(0.0D));
+//		opponentsVariance.put(sender, Double.valueOf(0.0D));
+//	}
 	
 
-	public void updateInfo(Object sender, Bid offeredBid) {
-		try {
-			updateNegotiatingInfo(sender, offeredBid);
-		} catch (Exception e1) {
-			System.out.println("更新谈判信息失败");
-			e1.printStackTrace();
-		}
-		try {
-			updateFrequencyList(sender, offeredBid);
-		} catch (Exception e) {
-			System.out.println("更新频率列表失败");
-			e.printStackTrace();
-		}
-	}
+//	public void updateInfo(Object sender, Bid offeredBid) {
+//		try {
+//			updateNegotiatingInfo(sender, offeredBid);
+//		} catch (Exception e1) {
+//			System.out.println("更新谈判信息失败");
+//			e1.printStackTrace();
+//		}
+//		try {
+//			updateFrequencyList(sender, offeredBid);
+//		} catch (Exception e) {
+//			System.out.println("更新频率列表失败");
+//			e.printStackTrace();
+//		}
+//	}
 	
-	public void printInfo() {
-		System.out.println("round: " + round);
-		for (Map.Entry<Object, HashMap<Issue, List<MyValueFrequency>>> oppoId : opponentFrequency.entrySet()) {
-			System.out.println(((AgentID) oppoId.getKey()).getName() + " :");
-			System.out.println();
-			for (Map.Entry<Issue, List<MyValueFrequency>> issues : oppoId.getValue().entrySet()) {
-				System.out.println(issues.getKey().getName());
-				for (MyValueFrequency frequency : issues.getValue()) {
-					System.out.println(frequency.toString());
-				}
-			}
-		}
-		System.out.println();
-		
-	}
+//	public void printInfo() {
+//		System.out.println("round: " + round);
+//		for (Map.Entry<Object, HashMap<Issue, List<MyValueFrequency>>> oppoId : opponentFrequency.entrySet()) {
+//			System.out.println(((AgentID) oppoId.getKey()).getName() + " :");
+//			System.out.println();
+//			for (Map.Entry<Issue, List<MyValueFrequency>> issues : oppoId.getValue().entrySet()) {
+//				System.out.println(issues.getKey().getName());
+//				for (MyValueFrequency frequency : issues.getValue()) {
+//					System.out.println(frequency.toString());
+//				}
+//			}
+//		}
+//		System.out.println();
+//
+//	}
 
 
-	private void updateNegotiatingInfo(Object sender, Bid offeredBid) {
-		ArrayList<Bid> bids = opponentsBidHistory.get(sender);
-		bids.add(offeredBid);
-		
-	}
-	
-	private void updateFrequencyList(Object sender, Bid offeredBid) {
-		
-		HashMap<Issue, List<MyValueFrequency>> issueMap = opponentFrequency.get(sender);
+//	private void updateNegotiatingInfo(Object sender, Bid offeredBid) {
+//		ArrayList<Bid> bids = opponentsBidHistory.get(sender);
+//		bids.add(offeredBid);
+//	}
+
+    public void printInfo(){
+	    System.out.println("round:"+round);
+	    for(Map.Entry<Issue,List<MyValueFrequency>> oppoInfo: opponentFrequency.entrySet() ){
+	        System.out.println("Issue"+oppoInfo.getKey());
+            for(int i=0;i<oppoInfo.getValue().size();i++){
+                System.out.println("Name"+oppoInfo.getValue().get(i).getValue().toString()+"Frequency"+oppoInfo.getValue().get(i).getFrequency());
+            }
+        }
+    }
+
+    public void getMaxFrequencyBid(){
+        for(Map.Entry<Issue,List<MyValueFrequency>> oppoInfo: opponentFrequency.entrySet()){
+            System.out.println("频次最高"+oppoInfo.getValue().get(0).getValue().toString()+"为"+oppoInfo.getValue().get(0).getFrequency());
+            //TODO:生成最高的bid，目前为输出信息
+        }
+    }
+
+	private void updateFrequencyList(Bid offeredBid) {
 		List<Issue> oIssues = offeredBid.getIssues();
 		for (Issue issue : oIssues) {
-			List<MyValueFrequency> frequencys = issueMap.get(issue);
+			frequencys = opponentFrequency.get(issue);
 			Value value = offeredBid.getValue(issue.getNumber());
 			for (MyValueFrequency frequency : frequencys) {
 				if (frequency.getValue().equals(value)){
 					frequency.setFrequency(frequency.getFrequency() + 1);
 				}
-			}
+ 			}
 			sort(frequencys);
 		}
 	}
@@ -153,7 +175,6 @@ public class MyNegotiationInfo {
 		}); 
 		
 	}
-
 
 	public ArrayList<Value> getValues(Issue issue) {
 		ArrayList<Value> values = new ArrayList<Value>();
@@ -212,78 +233,63 @@ public class MyNegotiationInfo {
 		this.round = round;
 	}
 
-	public List<Object> getOpponents() {
-		return opponents;
-	}
+//	public List<Object> getOpponents() {
+//		return opponents;
+//	}
 
-	public void setOpponents(List<Object> opponents) {
-		this.opponents = opponents;
-	}
+//	public void setOpponents(List<Object> opponents) {
+//		this.opponents = opponents;
+//	}
 
-	public HashMap<Object, HashMap<Issue, List<Value>>> getOpponentPrefectOrder() {
-		return opponentPrefectOrder;
-	}
+//	public HashMap<Object, HashMap<Issue, List<Value>>> getOpponentPrefectOrder() {
+//		return opponentPrefectOrder;
+//	}
+//
+//	public void setOpponentPrefectOrder(HashMap<Object, HashMap<Issue, List<Value>>> opponentPrefectOrder) {
+//		this.opponentPrefectOrder = opponentPrefectOrder;
+//	}
 
-	public void setOpponentPrefectOrder(HashMap<Object, HashMap<Issue, List<Value>>> opponentPrefectOrder) {
-		this.opponentPrefectOrder = opponentPrefectOrder;
-	}
 
-
-	public HashMap<Object, HashMap<Issue, List<MyValueFrequency>>> getOpponentFrequency() {
+	public HashMap<Issue, List<MyValueFrequency>> getOpponentFrequency() {
 		return opponentFrequency;
 	}
 
 
-	public void setOpponentFrequency(HashMap<Object, HashMap<Issue, List<MyValueFrequency>>> opponentFrequency) {
+	public void setOpponentFrequency(HashMap<Issue, List<MyValueFrequency>> opponentFrequency) {
 		this.opponentFrequency = opponentFrequency;
 	}
 
 
-	public HashMap<Object, ArrayList<Bid>> getOpponentsBidHistory() {
+	public ArrayList<Bid> getOpponentsBidHistory() {
 		return opponentsBidHistory;
 	}
 
 
-	public void setOpponentsBidHistory(HashMap<Object, ArrayList<Bid>> opponentsBidHistory) {
-		this.opponentsBidHistory = opponentsBidHistory;
-	}
+//	public void setOpponentsBidHistory(HashMap<Object, ArrayList<Bid>> opponentsBidHistory) {
+//		this.opponentsBidHistory = opponentsBidHistory;
+//	}
 
 
-	public HashMap<Object, Double> getOpponentsAverage() {
+	public Double getOpponentsAverage() {
 		return opponentsAverage;
 	}
 
 
-	public void setOpponentsAverage(HashMap<Object, Double> opponentsAverage) {
-		this.opponentsAverage = opponentsAverage;
+	public void setOpponentsAverage(Double opponentAverage) {
+		this.opponentsAverage = opponentAverage;
 	}
 
 
-	public HashMap<Object, Double> getOpponentsVariance() {
+	public Double getOpponentsVariance() {
 		return opponentsVariance;
 	}
 
 
-	public void setOpponentsVariance(HashMap<Object, Double> opponentsVariance) {
-		this.opponentsVariance = opponentsVariance;
+	public void setOpponentsVariance(Double opponentVariance) {
+		this.opponentsVariance = opponentVariance;
 	}
 
 
-	public int getNegotiatorNum() {
-		return negotiatorNum;
-	}
-
-
-	public void setNegotiatorNum(int negotiatorNum) {
-		this.negotiatorNum = negotiatorNum;
-	}
-
-
-
-
-
-	
-	
 }
 
 
