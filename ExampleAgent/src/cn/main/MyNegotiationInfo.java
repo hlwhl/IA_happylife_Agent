@@ -9,7 +9,6 @@ import java.util.Map;
 
 import negotiator.AgentID;
 import negotiator.Bid;
-import negotiator.Domain;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;

@@ -6,11 +6,9 @@ import negotiator.utility.AbstractUtilitySpace;
 
 public class MyNegotiationStrategy {
 	private AbstractUtilitySpace utilitySpace;
-	private MyNegotiationInfo negotiationInfo;
 
-	public MyNegotiationStrategy(AbstractUtilitySpace utilitySpace, MyNegotiationInfo negotiationInfo) {
+	public MyNegotiationStrategy(AbstractUtilitySpace utilitySpace) {
 		this.utilitySpace = utilitySpace;
-		this.negotiationInfo = negotiationInfo;
 	}
 
 	public boolean selectAccept(Bid lastReceivedOffer, double time) {
