@@ -6,9 +6,11 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
+import negotiator.issue.Value;
 import negotiator.utility.AbstractUtilitySpace;
 import negotiator.utility.AdditiveUtilitySpace;
 import negotiator.utility.EvaluatorDiscrete;
@@ -17,30 +19,21 @@ public class MyNegotiationInfo {
 	private AbstractUtilitySpace utilitySpace;
 	private List<Issue> issues;
 	private Map<Issue, List<MyValueEvaluation>> prefectOrder;
+	private Map<Issue, List<Value>> pValueList;
 
 	public MyNegotiationInfo(AbstractUtilitySpace utilitySpace) throws Exception {
 		this.utilitySpace = utilitySpace;
 		issues = utilitySpace.getDomain().getIssues();
 		initPrefectOrder();
-		printPrefectOrder();
-	}
-
-	private void printPrefectOrder() {
-		for (Map.Entry<Issue, List<MyValueEvaluation>> oppoInfo : prefectOrder.entrySet()) {
-			System.out.println("Issue : " + oppoInfo.getKey());
-			for (int i = 0; i < oppoInfo.getValue().size(); i++) {
-				MyValueEvaluation value = oppoInfo.getValue().get(i);
-				System.out.println(value.getValue().toString() + " : " + value.getEvaluation());
-			}
-		}
+		MyPrint.printPrefectOrder(prefectOrder);
 	}
 
 	private void initPrefectOrder() throws Exception {
 		prefectOrder = new HashMap<Issue, List<MyValueEvaluation>>();
 		int N = issues.size();
 		for (int i = 0; i < N; i++) {
-			IssueDiscrete di = (IssueDiscrete)issues.get(i);
-			EvaluatorDiscrete de = (EvaluatorDiscrete)((AdditiveUtilitySpace) utilitySpace).getEvaluator(i + 1);
+			IssueDiscrete di = (IssueDiscrete) issues.get(i);
+			EvaluatorDiscrete de = (EvaluatorDiscrete) ((AdditiveUtilitySpace) utilitySpace).getEvaluator(i + 1);
 			int M = di.getNumberOfValues();
 			List<MyValueEvaluation> values = new ArrayList<MyValueEvaluation>();
 			for (int j = 0; j < M; j++) {
@@ -68,4 +61,74 @@ public class MyNegotiationInfo {
 		});
 
 	}
+
+	public void optionPValueList(Double updatePValueTime, OppentNegotiationInfo oppent1Info,
+			OppentNegotiationInfo oppent2Info) {
+		pValueList = new HashMap<Issue, List<Value>>();
+		if (oppent1Info != null) {
+			optionPValueList(oppent1Info);
+		}
+		if (oppent2Info != null) {
+			optionPValueList(oppent2Info);
+		}
+		MyPrint.printPValueList(pValueList);
+	}
+
+	private void optionPValueList(OppentNegotiationInfo oppentInfo) {
+		HashMap<Issue, List<MyValueFrequency>> opponentFrequency = oppentInfo.getOpponentFrequency();
+		for (Map.Entry<Issue, List<MyValueFrequency>> issueValue : opponentFrequency.entrySet()) {
+			List<MyValueEvaluation> prefectValues = prefectOrder.get(issueValue.getKey());
+			getSameValue(0, 0.5, issueValue, prefectValues);
+			if (pValueList.get(issueValue.getKey()) == null)
+				getSameValue(0.25, 0.75, issueValue, prefectValues);
+		}
+	}
+
+	private void getSameValue(double startScale, double endScale, Entry<Issue, List<MyValueFrequency>> issueValue,
+			List<MyValueEvaluation> myValues) {
+		List<Value> sameValues = new ArrayList<Value>();
+		List<MyValueFrequency> oppentValues = issueValue.getValue();
+		Integer startIndex = getStartIndex(startScale, oppentValues.size());
+		Integer endIndex = getEndIndex(endScale, oppentValues.size());
+		for (int i = startIndex; i <= endIndex; i++) {
+			for (int j = startIndex; j <= endIndex; j++) {
+				if (oppentValues.get(i).getValue().equals(myValues.get(j).getValue()))
+					sameValues.add(oppentValues.get(i).getValue());
+			}
+		}
+		if (sameValues.size() == 0)
+			return;
+		pValueList.put(issueValue.getKey(), sameValues);
+
+	}
+
+	private Integer getStartIndex(double startScale, int size) {
+		return (int) Math.ceil(startScale * (size - 1));
+	}
+	
+	private Integer getEndIndex(double endScale, int size) {
+		return (int) Math.floor(endScale * (size - 1));
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

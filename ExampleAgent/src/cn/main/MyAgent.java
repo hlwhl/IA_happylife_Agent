@@ -18,6 +18,7 @@ public class MyAgent extends AbstractNegotiationParty {
 	private Bid lastReceivedOffer;
 	private Bid myLastOffer;
 	private double thresholdUtility;
+	private Double updatePValueTime = 0.1D;
 	private TimeLineInfo timeLineInfo;
 	private MyNegotiationStrategy negotiationStrategy;
 	private MyNegotiationInfo myInfo;
@@ -43,6 +44,10 @@ public class MyAgent extends AbstractNegotiationParty {
 	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		double time = timeLineInfo.getTime();
 		// negotiationInfo.updateTimeScale(time);
+		if (time > updatePValueTime){
+			myInfo.optionPValueList(updatePValueTime, oppent1Info, oppent2Info);
+			updatePValueTime += 0.1D;
+		}
 		if (validActions.contains(Accept.class) && negotiationStrategy.selectAccept(lastReceivedOffer, time))
 			return new Accept(getPartyId(), lastReceivedOffer);
 		if (negotiationStrategy.selectEndNegotiation(time)) return new EndNegotiation(getPartyId());
