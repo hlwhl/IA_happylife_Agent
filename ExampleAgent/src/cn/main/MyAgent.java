@@ -20,9 +20,9 @@ public class MyAgent extends AbstractNegotiationParty {
 	private double thresholdUtility;
 	private TimeLineInfo timeLineInfo;
 	private MyNegotiationStrategy negotiationStrategy;
-
-	private MyNegotiationInfo oppent1Info;
-	private MyNegotiationInfo oppent2Info;
+	private MyNegotiationInfo myInfo;
+	private OppentNegotiationInfo oppent1Info;
+	private OppentNegotiationInfo oppent2Info;
 
 	@Override
 	public void init(NegotiationInfo info) {
@@ -31,6 +31,12 @@ public class MyAgent extends AbstractNegotiationParty {
 		this.timeLineInfo = info.getTimeline();
 		utilitySpace = info.getUtilitySpace();
 		negotiationStrategy = new MyNegotiationStrategy(utilitySpace);
+		try {
+			myInfo = new MyNegotiationInfo(utilitySpace);
+		} catch (Exception e) {
+			System.out.println("初始化自己谈判信息失败");
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -59,11 +65,11 @@ public class MyAgent extends AbstractNegotiationParty {
 				// 初始化oppentInfo
 				lastReceivedOffer = ((Offer) action).getBid();
 				if (oppent1Info == null) {
-					oppent1Info = new MyNegotiationInfo(utilitySpace, sender);
+					oppent1Info = new OppentNegotiationInfo(utilitySpace, sender);
 					Offer offer = (Offer) action;
 					oppent1Info.addOppentHistory(offer.getBid());
 				} else if (oppent2Info == null) {
-					oppent2Info = new MyNegotiationInfo(utilitySpace, sender);
+					oppent2Info = new OppentNegotiationInfo(utilitySpace, sender);
 					Offer offer = (Offer) action;
 					oppent2Info.addOppentHistory(offer.getBid());
 				}
@@ -82,7 +88,7 @@ public class MyAgent extends AbstractNegotiationParty {
 		}
 
 		// 输出信息
-		if (timeline.getTime() > 0.99) {
+		if (timeline.getTime() > 1) {
 			oppent1Info.printInfo();
 			oppent2Info.printInfo();
 

@@ -20,7 +20,7 @@ public class Atlas32016 extends AbstractNegotiationParty
         offeredBid = null;
         supporter_num = 0;
         CList_index = 0;
-        isPrinting = true;
+        isPrinting = false;
     }
 
     public void init(NegotiationInfo info)
