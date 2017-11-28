@@ -90,7 +90,11 @@ public class MyAgent extends AbstractNegotiationParty {
             //生成猜测到的对方最大utility的Bid
             //TODO:使用最大bid计算
             Bid max1Bid=oppent1Info.getMaxFrequencyBid();
+            System.out.println(max1Bid.toString());
+            System.out.println("对手1最大bid在我们agent的utility"+utilitySpace.getUtility(max1Bid));
             Bid max2Bid=oppent2Info.getMaxFrequencyBid();
+            System.out.println(max2Bid.toString());
+            System.out.println("对手2最大bid在我们agentutility"+utilitySpace.getUtility(max2Bid));
         }
 
 //		if (action != null) {

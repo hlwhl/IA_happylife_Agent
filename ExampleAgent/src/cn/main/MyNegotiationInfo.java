@@ -139,7 +139,7 @@ public class MyNegotiationInfo {
             //输出信息
             System.out.println("频次最高"+oppoInfo.getValue().get(0).getValue().toString()+"为"+oppoInfo.getValue().get(0).getFrequency());
             //bid生成
-            bidP.put(oppoInfo.getKey().getNumber(),new ValueDiscrete(oppoInfo.getValue().get(0).toString()));
+            bidP.put(oppoInfo.getKey().getNumber(),new ValueDiscrete(oppoInfo.getValue().get(0).getValue().toString()));
         }
         return new Bid(utilitySpace.getDomain(),bidP);
     }
