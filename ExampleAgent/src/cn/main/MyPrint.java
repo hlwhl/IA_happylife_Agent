@@ -13,10 +13,10 @@ public class MyPrint {
 		for (Map.Entry<Issue, List<Value>> issueValues: pValueList.entrySet()) {
 			System.out.println("issue : " + issueValues.getKey().getName());
 			for (Value value : issueValues.getValue()) {
-				System.out.println("		value : " + value.toString());
+				System.out.println(" value : " + value.toString());
 			}
-			System.out.println("");
 		}
+		System.out.println("");
 	}
 
 	public static void printPrefectOrder(Map<Issue, List<MyValueEvaluation>> prefectOrder) {
@@ -25,9 +25,10 @@ public class MyPrint {
 			System.out.println("Issue : " + oppoInfo.getKey());
 			for (int i = 0; i < oppoInfo.getValue().size(); i++) {
 				MyValueEvaluation value = oppoInfo.getValue().get(i);
-				System.out.println(value.getValue().toString() + " : " + value.getEvaluation());
+				System.out.println(" " + value.getValue().toString() + " : " + value.getEvaluation());
 			}
 		}
+		System.out.println(" ");
 		
 	}
 
@@ -37,9 +38,9 @@ public class MyPrint {
 			System.out.println("Issue : " + oppoInfo.getKey());
 			for (int i = 0; i < oppoInfo.getValue().size(); i++) {
 				MyValueFrequency value = oppoInfo.getValue().get(i);
-				System.out.println(value.getValue().toString() + " : " + value.getFrequency());
+				System.out.println(" " + value.getValue().toString() + " : " + value.getFrequency());
 			}
 		}
-		
+		System.out.println(" ");
 	}
 }

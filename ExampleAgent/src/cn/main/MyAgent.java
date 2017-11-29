@@ -50,7 +50,7 @@ public class MyAgent extends AbstractNegotiationParty {
 	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		double time = timeLineInfo.getTime();
 		if (time > updatePValueTime) {
-			myInfo.optionPValueList(updatePValueTime, oppent1Info, oppent2Info);
+			myInfo.optionPValueList(oppent1Info, oppent2Info);
 			updatePValueTime += 0.1D;
 			MyPrint.printOpponentFrequency(oppent1Info.getOpponentFrequency());
 		}
@@ -74,7 +74,7 @@ public class MyAgent extends AbstractNegotiationParty {
 		Bid bid = null;
 		Random r = new Random();
 		HashMap<Integer, Value> bidP = new HashMap<Integer, Value>();
-		Map<Issue, List<Value>> pvl = myInfo.getPValueList(updatePValueTime, oppent1Info, oppent2Info);
+		Map<Issue, List<Value>> pvl = myInfo.getPValueList(oppent1Info, oppent2Info);
 		for (Map.Entry<Issue, List<Value>> issueValues : pvl.entrySet()) {
 			bidP.put(issueValues.getKey().getNumber(),
 					new ValueDiscrete(issueValues.getValue().get(r.nextInt(issueValues.getValue().size())).toString()));

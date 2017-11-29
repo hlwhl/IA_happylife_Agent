@@ -62,7 +62,7 @@ public class MyNegotiationInfo {
 
 	}
 
-	public void optionPValueList(Double updatePValueTime, OppentNegotiationInfo oppent1Info,
+	public void optionPValueList(OppentNegotiationInfo oppent1Info,
 			OppentNegotiationInfo oppent2Info) {
 		pValueList = new HashMap<Issue, List<Value>>();
 		if (oppent1Info != null) {
@@ -75,7 +75,7 @@ public class MyNegotiationInfo {
 	}
 
 	//获取pValueList方法
-	public Map<Issue, List<Value>> getPValueList(Double updatePValueTime, OppentNegotiationInfo oppent1Info,
+	public Map<Issue, List<Value>> getPValueList(OppentNegotiationInfo oppent1Info,
 			OppentNegotiationInfo oppent2Info) {
 		pValueList = new HashMap<Issue, List<Value>>();
 		if (oppent1Info != null) {
@@ -91,9 +91,11 @@ public class MyNegotiationInfo {
 		HashMap<Issue, List<MyValueFrequency>> opponentFrequency = oppentInfo.getOpponentFrequency();
 		for (Map.Entry<Issue, List<MyValueFrequency>> issueValue : opponentFrequency.entrySet()) {
 			List<MyValueEvaluation> prefectValues = prefectOrder.get(issueValue.getKey());
-			getSameValue(0, 0.5, issueValue, prefectValues);
-			if (pValueList.get(issueValue.getKey()) == null)
-				getSameValue(0.25, 0.75, issueValue, prefectValues);
+			double initial = 0.1d;
+			while(pValueList.get(issueValue.getKey()) == null && initial <= 1){
+				getSameValue(0, initial, issueValue, prefectValues);
+				initial += 0.1d;
+			}
 		}
 	}
 
@@ -116,7 +118,7 @@ public class MyNegotiationInfo {
 	}
 
 	private Integer getStartIndex(double startScale, int size) {
-		return (int) Math.ceil(startScale * (size - 1));
+		return (int) Math.floor(startScale * (size - 1));
 	}
 	
 	private Integer getEndIndex(double endScale, int size) {
