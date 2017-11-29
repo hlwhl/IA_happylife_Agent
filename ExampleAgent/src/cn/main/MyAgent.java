@@ -47,6 +47,7 @@ public class MyAgent extends AbstractNegotiationParty {
 		if (time > updatePValueTime){
 			myInfo.optionPValueList(updatePValueTime, oppent1Info, oppent2Info);
 			updatePValueTime += 0.1D;
+			MyPrint.printOpponentFrequency(oppent1Info.getOpponentFrequency());
 		}
 		if (validActions.contains(Accept.class) && negotiationStrategy.selectAccept(lastReceivedOffer, time))
 			return new Accept(getPartyId(), lastReceivedOffer);

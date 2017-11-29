@@ -1,5 +1,6 @@
 package cn.main;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,11 +20,24 @@ public class MyPrint {
 	}
 
 	public static void printPrefectOrder(Map<Issue, List<MyValueEvaluation>> prefectOrder) {
+		System.out.println("Tittle : prefectOrder");
 		for (Map.Entry<Issue, List<MyValueEvaluation>> oppoInfo : prefectOrder.entrySet()) {
 			System.out.println("Issue : " + oppoInfo.getKey());
 			for (int i = 0; i < oppoInfo.getValue().size(); i++) {
 				MyValueEvaluation value = oppoInfo.getValue().get(i);
 				System.out.println(value.getValue().toString() + " : " + value.getEvaluation());
+			}
+		}
+		
+	}
+
+	public static void printOpponentFrequency(HashMap<Issue, List<MyValueFrequency>> opponentFrequency) {
+		System.out.println("Tittle : opponentFrequency");
+		for (Map.Entry<Issue, List<MyValueFrequency>> oppoInfo : opponentFrequency.entrySet()) {
+			System.out.println("Issue : " + oppoInfo.getKey());
+			for (int i = 0; i < oppoInfo.getValue().size(); i++) {
+				MyValueFrequency value = oppoInfo.getValue().get(i);
+				System.out.println(value.getValue().toString() + " : " + value.getFrequency());
 			}
 		}
 		
