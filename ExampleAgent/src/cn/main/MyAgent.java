@@ -1,6 +1,9 @@
 package cn.main;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import negotiator.AgentID;
 import negotiator.Bid;
@@ -8,6 +11,9 @@ import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
+import negotiator.issue.Issue;
+import negotiator.issue.Value;
+import negotiator.issue.ValueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.parties.NegotiationInfo;
 import negotiator.timeline.TimeLineInfo;
@@ -43,7 +49,6 @@ public class MyAgent extends AbstractNegotiationParty {
 	@Override
 	public Action chooseAction(List<Class<? extends Action>> validActions) {
 		double time = timeLineInfo.getTime();
-		// negotiationInfo.updateTimeScale(time);
 		if (time > updatePValueTime){
 			myInfo.optionPValueList(updatePValueTime, oppent1Info, oppent2Info);
 			updatePValueTime += 0.1D;
@@ -56,10 +61,25 @@ public class MyAgent extends AbstractNegotiationParty {
 	}
 
 	private Action OfferAction() {
-		Bid bid = generateRandomBid();
-		while (getUtility(bid) < 0.9) {
-			bid = generateRandomBid();
+
+		if(timeline.getTime()<0.1){
+			Bid bid = generateRandomBid();
+			while (getUtility(bid) < 0.9) {
+				bid = generateRandomBid();
+			}
+			return new Offer(getPartyId(),bid);
 		}
+
+		//从myInfo.pValueList随机组合bid
+		Bid bid = null;
+		Random r=new Random();
+		HashMap<Integer,Value> bidP=new HashMap<Integer, Value>();
+		Map<Issue, List<Value>> pvl=myInfo.getPValueList(updatePValueTime,oppent1Info,oppent2Info);
+		for (Map.Entry<Issue, List<Value>> issueValues: pvl.entrySet()) {
+			bidP.put(issueValues.getKey().getNumber(),new ValueDiscrete(issueValues.getValue().get(r.nextInt(issueValues.getValue().size())).toString()));
+			bid=new Bid(utilitySpace.getDomain(),bidP);
+		}
+		System.out.println("生成"+bid);
 		return new Offer(getPartyId(), bid);
 	}
 

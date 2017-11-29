@@ -74,6 +74,19 @@ public class MyNegotiationInfo {
 		MyPrint.printPValueList(pValueList);
 	}
 
+	//获取pValueList方法
+	public Map<Issue, List<Value>> getPValueList(Double updatePValueTime, OppentNegotiationInfo oppent1Info,
+			OppentNegotiationInfo oppent2Info) {
+		pValueList = new HashMap<Issue, List<Value>>();
+		if (oppent1Info != null) {
+			optionPValueList(oppent1Info);
+		}
+		if (oppent2Info != null) {
+			optionPValueList(oppent2Info);
+		}
+		return pValueList;
+	}
+
 	private void optionPValueList(OppentNegotiationInfo oppentInfo) {
 		HashMap<Issue, List<MyValueFrequency>> opponentFrequency = oppentInfo.getOpponentFrequency();
 		for (Map.Entry<Issue, List<MyValueFrequency>> issueValue : opponentFrequency.entrySet()) {
@@ -83,6 +96,7 @@ public class MyNegotiationInfo {
 				getSameValue(0.25, 0.75, issueValue, prefectValues);
 		}
 	}
+
 
 	private void getSameValue(double startScale, double endScale, Entry<Issue, List<MyValueFrequency>> issueValue,
 			List<MyValueEvaluation> myValues) {
@@ -99,7 +113,6 @@ public class MyNegotiationInfo {
 		if (sameValues.size() == 0)
 			return;
 		pValueList.put(issueValue.getKey(), sameValues);
-
 	}
 
 	private Integer getStartIndex(double startScale, int size) {
@@ -110,25 +123,3 @@ public class MyNegotiationInfo {
 		return (int) Math.floor(endScale * (size - 1));
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
