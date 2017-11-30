@@ -39,7 +39,7 @@ public class MyAgent extends AbstractNegotiationParty {
 		utilitySpace = info.getUtilitySpace();
 		negotiationStrategy = new MyNegotiationStrategy(utilitySpace);
 		try {
-			myInfo = new MyNegotiationInfo(utilitySpace);
+			myInfo = new MyNegotiationInfo(utilitySpace, negotiationStrategy);
 		} catch (Exception e) {
 			System.out.println("初始化自己谈判信息失败");
 			e.printStackTrace();
@@ -68,26 +68,18 @@ public class MyAgent extends AbstractNegotiationParty {
 
 	private Action OfferAction() throws Exception {
 
-		if (timeline.getTime() < 0.1) {
-			
+		if (timeline.getTime() < 0.15) {
 			Bid bid = utilitySpace.getMaxUtilityBid();
 //			while (getUtility(bid) < 0.9) {
 //				bid = generateRandomBid();
 //			}
 			return new Offer(getPartyId(), bid);
 		}
-
 		// 从myInfo.pValueList随机组合bid
-		Bid bid = null;
-		Random r = new Random();
-		HashMap<Integer, Value> bidP = new HashMap<Integer, Value>();
-		Map<Issue, List<Value>> pvl = myInfo.getpValueList();
-		for (Map.Entry<Issue, List<Value>> issueValues : pvl.entrySet()) {
-			bidP.put(issueValues.getKey().getNumber(),
-					new ValueDiscrete(issueValues.getValue().get(r.nextInt(issueValues.getValue().size())).toString()));
-			bid = new Bid(utilitySpace.getDomain(), bidP);
+		Bid bid = negotiationStrategy.getRandomFromPValueList(myInfo.getpValueList());
+		while(utilitySpace.getUtility(bid) < myInfo.getAverageThreshold()){
+			bid = negotiationStrategy.getRandomFromPValueList(myInfo.getpValueList());
 		}
-		System.out.println("生成" + bid);
 		return new Offer(getPartyId(), bid);
 	}
 

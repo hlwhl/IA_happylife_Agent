@@ -1,7 +1,15 @@
 package cn.main;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 import negotiator.Bid;
 import negotiator.actions.Action;
+import negotiator.issue.Issue;
+import negotiator.issue.Value;
+import negotiator.issue.ValueDiscrete;
 import negotiator.utility.AbstractUtilitySpace;
 
 public class MyNegotiationStrategy {
@@ -62,5 +70,20 @@ public class MyNegotiationStrategy {
 	public Action OfferAction() {
 
 		return null;
+	}
+
+	public Bid getRandomFromPValueList(Map<Issue, List<Value>> pvl) {
+		// 从myInfo.pValueList随机组合bid
+		Bid bid = null;
+		Random r = new Random();
+		HashMap<Integer, Value> bidP = new HashMap<Integer, Value>();
+		
+		for (Map.Entry<Issue, List<Value>> issueValues : pvl.entrySet()) {
+			bidP.put(issueValues.getKey().getNumber(),
+					new ValueDiscrete(issueValues.getValue().get(r.nextInt(issueValues.getValue().size())).toString()));
+			bid = new Bid(utilitySpace.getDomain(), bidP);
+		}
+		System.out.println("生成" + bid);
+		return bid;
 	}
 }

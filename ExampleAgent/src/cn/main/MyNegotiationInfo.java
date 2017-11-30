@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import negotiator.Bid;
 import negotiator.issue.Issue;
 import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
@@ -17,12 +18,17 @@ import negotiator.utility.EvaluatorDiscrete;
 
 public class MyNegotiationInfo {
 	private AbstractUtilitySpace utilitySpace;
+	private MyNegotiationStrategy strategy;
 	private List<Issue> issues;
 	private Map<Issue, List<MyValueEvaluation>> prefectOrder;
 	private Map<Issue, List<Value>> pValueList;
+	private Double minThreshold = 1.0d;
+	private Double maxThreshold = 0.0d;
+	private Double averageThreshold = 0.0d;
 
-	public MyNegotiationInfo(AbstractUtilitySpace utilitySpace) throws Exception {
+	public MyNegotiationInfo(AbstractUtilitySpace utilitySpace, MyNegotiationStrategy strategy) throws Exception {
 		this.utilitySpace = utilitySpace;
+		this.strategy = strategy;
 		issues = utilitySpace.getDomain().getIssues();
 		initPrefectOrder();
 		MyPrint.printPrefectOrder(prefectOrder);
@@ -72,6 +78,32 @@ public class MyNegotiationInfo {
 			optionPValueList(oppent2Info);
 		}
 		MyPrint.printPValueList(pValueList);
+		getThreshold();
+	}
+
+	private void getThreshold() {
+		minThreshold = 1.0d;
+		maxThreshold = 0.0d;
+		averageThreshold = 0.0d;
+		int num = getPossiblePValueNum();
+		for (int i = 0; i < 2 * num; i++) {
+			Bid bid = strategy.getRandomFromPValueList(pValueList);
+			double utility = utilitySpace.getUtility(bid);
+			if (utility < minThreshold)
+				minThreshold = utility;
+			if (utility > maxThreshold)
+				maxThreshold = utility;
+		}
+		averageThreshold = (minThreshold + maxThreshold)/2;
+		MyPrint.printThreshold(minThreshold, maxThreshold, averageThreshold);
+	}
+
+	private int getPossiblePValueNum() {
+		int number = 1;
+		for (Map.Entry<Issue, List<Value>> issues : pValueList.entrySet()) {
+			number *= issues.getValue().size();
+		}
+		return number;
 	}
 
 	private void optionPValueList(OppentNegotiationInfo oppentInfo) {
@@ -79,7 +111,7 @@ public class MyNegotiationInfo {
 		for (Map.Entry<Issue, List<MyValueFrequency>> issueValue : opponentFrequency.entrySet()) {
 			List<MyValueEvaluation> prefectValues = prefectOrder.get(issueValue.getKey());
 			double initial = 0.1d;
-			while(pValueList.get(issueValue.getKey()) == null && initial <= 1){
+			while((pValueList.get(issueValue.getKey()) == null || pValueList.get(issueValue.getKey()).size() <= Math.ceil(prefectValues.size()/5)) && initial <= 1){
 				getSameValue(0, initial, issueValue, prefectValues);
 				initial += 0.1d;
 			}
@@ -142,6 +174,38 @@ public class MyNegotiationInfo {
 
 	public void setpValueList(Map<Issue, List<Value>> pValueList) {
 		this.pValueList = pValueList;
+	}
+
+	public MyNegotiationStrategy getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(MyNegotiationStrategy strategy) {
+		this.strategy = strategy;
+	}
+
+	public Double getMinThreshold() {
+		return minThreshold;
+	}
+
+	public void setMinThreshold(Double minThreshold) {
+		this.minThreshold = minThreshold;
+	}
+
+	public Double getMaxThreshold() {
+		return maxThreshold;
+	}
+
+	public void setMaxThreshold(Double maxThreshold) {
+		this.maxThreshold = maxThreshold;
+	}
+
+	public Double getAverageThreshold() {
+		return averageThreshold;
+	}
+
+	public void setAverageThreshold(Double averageThreshold) {
+		this.averageThreshold = averageThreshold;
 	}
 	
 }
