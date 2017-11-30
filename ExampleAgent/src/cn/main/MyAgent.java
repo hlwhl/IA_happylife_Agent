@@ -133,6 +133,7 @@ public class MyAgent extends AbstractNegotiationParty {
 	private void updateThresholdUtility() {
 		double currenttime = timeline.getCurrentTime();
 		this.thresholdUtility = 1.0D - Math.pow(1.1, currenttime - 180);
+		//ddddd
 	}
 
 	@Override
