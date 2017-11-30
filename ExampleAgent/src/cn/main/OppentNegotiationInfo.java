@@ -20,11 +20,7 @@ public class OppentNegotiationInfo {
 	private AbstractUtilitySpace utilitySpace;
 	private List<Issue> issues;
 	private HashMap<Issue, List<MyValueFrequency>> opponentFrequency;
-
-	// private HashMap<Object, HashMap<Issue, List<Value>>> opponentPrefectOrder;
-
 	private ArrayList<Bid> opponentsBidHistory = null;
-
 	private Double opponentsAverage;
 	private Double opponentsVariance;
 
@@ -57,10 +53,6 @@ public class OppentNegotiationInfo {
 		updateFrequencyList(b);
 	}
 
-	// public void initOpponent(Object sender) {
-	// initNegotiatingInfo(sender);
-	// initOpponentValueFrequency(sender);
-	// }
 
 	private void initOpponentValueFrequency() {
 		for (Issue issue : issues) {
@@ -75,48 +67,6 @@ public class OppentNegotiationInfo {
 			this.opponentFrequency.put(issue, frequencys);
 		}
 	}
-
-	// private void initNegotiatingInfo(Object sender) {
-	// opponentsBidHistory.put(sender, new ArrayList<Bid>());
-	// opponentsAverage.put(sender, Double.valueOf(0.0D));
-	// opponentsVariance.put(sender, Double.valueOf(0.0D));
-	// }
-
-	// public void updateInfo(Object sender, Bid offeredBid) {
-	// try {
-	// updateNegotiatingInfo(sender, offeredBid);
-	// } catch (Exception e1) {
-	// System.out.println("更新谈判信息失败");
-	// e1.printStackTrace();
-	// }
-	// try {
-	// updateFrequencyList(sender, offeredBid);
-	// } catch (Exception e) {
-	// System.out.println("更新频率列表失败");
-	// e.printStackTrace();
-	// }
-	// }
-
-	// public void printInfo() {
-	// System.out.println("round: " + round);
-	// for (Map.Entry<Object, HashMap<Issue, List<MyValueFrequency>>> oppoId : opponentFrequency.entrySet()) {
-	// System.out.println(((AgentID) oppoId.getKey()).getName() + " :");
-	// System.out.println();
-	// for (Map.Entry<Issue, List<MyValueFrequency>> issues : oppoId.getValue().entrySet()) {
-	// System.out.println(issues.getKey().getName());
-	// for (MyValueFrequency frequency : issues.getValue()) {
-	// System.out.println(frequency.toString());
-	// }
-	// }
-	// }
-	// System.out.println();
-	//
-	// }
-
-	// private void updateNegotiatingInfo(Object sender, Bid offeredBid) {
-	// ArrayList<Bid> bids = opponentsBidHistory.get(sender);
-	// bids.add(offeredBid);
-	// }
 
 	public void printInfo() {
 		System.out.println("round:" + round);
@@ -204,21 +154,6 @@ public class OppentNegotiationInfo {
 		this.round = round;
 	}
 
-	// public List<Object> getOpponents() {
-	// return opponents;
-	// }
-
-	// public void setOpponents(List<Object> opponents) {
-	// this.opponents = opponents;
-	// }
-
-	// public HashMap<Object, HashMap<Issue, List<Value>>> getOpponentPrefectOrder() {
-	// return opponentPrefectOrder;
-	// }
-	//
-	// public void setOpponentPrefectOrder(HashMap<Object, HashMap<Issue, List<Value>>> opponentPrefectOrder) {
-	// this.opponentPrefectOrder = opponentPrefectOrder;
-	// }
 
 	public HashMap<Issue, List<MyValueFrequency>> getOpponentFrequency() {
 		return opponentFrequency;
@@ -232,9 +167,6 @@ public class OppentNegotiationInfo {
 		return opponentsBidHistory;
 	}
 
-	// public void setOpponentsBidHistory(HashMap<Object, ArrayList<Bid>> opponentsBidHistory) {
-	// this.opponentsBidHistory = opponentsBidHistory;
-	// }
 
 	public Double getOpponentsAverage() {
 		return opponentsAverage;

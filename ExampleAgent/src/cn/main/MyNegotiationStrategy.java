@@ -52,13 +52,7 @@ public class MyNegotiationStrategy {
 		if (time > 1) {
 			utility = 0.8;
 		}
-		if(time>0.99){
-
-		}
 		System.out.println("测试"+utility);
-		//		if (time > 0.99) {
-		//			utility=utilitySpace.getReservationValue();
-		//		}
 		return u > utility;
 	}
 

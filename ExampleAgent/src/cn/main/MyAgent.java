@@ -1,9 +1,6 @@
 package cn.main;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 import negotiator.AgentID;
 import negotiator.Bid;
@@ -11,9 +8,6 @@ import negotiator.actions.Accept;
 import negotiator.actions.Action;
 import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
-import negotiator.issue.Issue;
-import negotiator.issue.Value;
-import negotiator.issue.ValueDiscrete;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.parties.NegotiationInfo;
 import negotiator.timeline.TimeLineInfo;
