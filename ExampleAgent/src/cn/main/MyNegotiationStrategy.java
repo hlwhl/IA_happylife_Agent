@@ -52,7 +52,6 @@ public class MyNegotiationStrategy {
 		if (time > 1) {
 			utility = 0.8;
 		}
-		System.out.println("测试"+utility);
 		return u > utility;
 	}
 

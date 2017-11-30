@@ -45,6 +45,8 @@ public class MyAgent extends AbstractNegotiationParty {
 		double time = timeLineInfo.getTime();
 		if (time > updatePValueTime) {
 			myInfo.optionPValueList(oppent1Info, oppent2Info);
+			//调用计算方差
+			oppent1Info.caluOpponentsIssueVariance();
 			updatePValueTime += 0.1D;
 			MyPrint.printOpponentFrequency(oppent1Info.getOpponentFrequency());
 		}
@@ -120,6 +122,7 @@ public class MyAgent extends AbstractNegotiationParty {
 			Bid max2Bid = oppent2Info.getMaxFrequencyBid();
 			System.out.println(max2Bid.toString());
 			System.out.println("对手2最大bid在我们agentutility" + utilitySpace.getUtility(max2Bid));
+
 		}
 
 	}
@@ -127,7 +130,6 @@ public class MyAgent extends AbstractNegotiationParty {
 	private void updateThresholdUtility() {
 		double currenttime = timeline.getCurrentTime();
 		this.thresholdUtility = 1.0D - Math.pow(1.1, currenttime - 180);
-		//ddddd
 	}
 
 	@Override

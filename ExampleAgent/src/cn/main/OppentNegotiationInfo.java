@@ -1,11 +1,6 @@
 package cn.main;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import negotiator.AgentID;
 import negotiator.Bid;
@@ -21,6 +16,7 @@ public class OppentNegotiationInfo {
 	private List<Issue> issues;
 	private HashMap<Issue, List<MyValueFrequency>> opponentFrequency;
 	private ArrayList<Bid> opponentsBidHistory = null;
+	private HashMap<Issue, Double> opponentsIssueVariance;
 	private Double opponentsAverage;
 	private Double opponentsVariance;
 
@@ -39,9 +35,9 @@ public class OppentNegotiationInfo {
 	public OppentNegotiationInfo(AbstractUtilitySpace utilitySpace, AgentID id) {
 		this.utilitySpace = utilitySpace;
 		issues = utilitySpace.getDomain().getIssues();
-		// opponentPrefectOrder = new HashMap<Object, HashMap<Issue, List<Value>>>();
 		opponentFrequency = new HashMap<Issue, List<MyValueFrequency>>();
 		opponentsBidHistory = new ArrayList<Bid>();
+		opponentsIssueVariance = new HashMap<Issue, Double>();
 		opponentsAverage = 0.0D;
 		opponentsVariance = 0.0D;
 		setOppentID(id);
@@ -49,10 +45,10 @@ public class OppentNegotiationInfo {
 	}
 
 	public void addOppentHistory(Bid b) {
+		this.round++;
 		opponentsBidHistory.add(b);
 		updateFrequencyList(b);
 	}
-
 
 	private void initOpponentValueFrequency() {
 		for (Issue issue : issues) {
@@ -73,8 +69,9 @@ public class OppentNegotiationInfo {
 		for (Map.Entry<Issue, List<MyValueFrequency>> oppoInfo : opponentFrequency.entrySet()) {
 			System.out.println("Issue" + oppoInfo.getKey());
 			for (int i = 0; i < oppoInfo.getValue().size(); i++) {
-				System.out.println("Name" + oppoInfo.getValue().get(i).getValue().toString() + "Frequency"
-						+ oppoInfo.getValue().get(i).getFrequency());
+				System.out.println(
+						"Name" + oppoInfo.getValue().get(i).getValue().toString() + "Frequency" + oppoInfo.getValue()
+								.get(i).getFrequency());
 			}
 		}
 	}
@@ -83,8 +80,9 @@ public class OppentNegotiationInfo {
 		HashMap<Integer, Value> bidP = new HashMap<Integer, Value>();
 		for (Map.Entry<Issue, List<MyValueFrequency>> oppoInfo : opponentFrequency.entrySet()) {
 			// 输出信息
-			System.out.println("频次最高" + oppoInfo.getValue().get(0).getValue().toString() + "为"
-					+ oppoInfo.getValue().get(0).getFrequency());
+			System.out.println(
+					"频次最高" + oppoInfo.getValue().get(0).getValue().toString() + "为" + oppoInfo.getValue().get(0)
+							.getFrequency());
 			// bid生成
 			bidP.put(oppoInfo.getKey().getNumber(),
 					new ValueDiscrete(oppoInfo.getValue().get(0).getValue().toString()));
@@ -113,8 +111,12 @@ public class OppentNegotiationInfo {
 			public int compare(MyValueFrequency o1, MyValueFrequency o2) {
 
 				// 降序排列
-				if (o1.getFrequency() < o2.getFrequency()) { return 1; }
-				if (o1.getFrequency() == o2.getFrequency()) { return 0; }
+				if (o1.getFrequency() < o2.getFrequency()) {
+					return 1;
+				}
+				if (o1.getFrequency() == o2.getFrequency()) {
+					return 0;
+				}
 				return -1;
 			}
 		});
@@ -128,6 +130,40 @@ public class OppentNegotiationInfo {
 			values.add(value);
 		}
 		return values;
+	}
+
+	//计算对手Issue间的方差
+	public void caluOpponentsIssueVariance() {
+		int totalDiffentTimes = 0;
+		for (int i = 1; i < utilitySpace.getDomain().getIssues().size(); i++) {
+			int diffirentTimes = 0;
+			String compare;
+			for (int j = 0; j < opponentsBidHistory.size(); j++) {
+				if (j > 0) {
+					compare = opponentsBidHistory.get(j - 1).getValue(i).toString();
+					if (!compare.equals(opponentsBidHistory.get(j).getValue(i).toString())) {
+						diffirentTimes++;
+					}
+				}
+			}
+			totalDiffentTimes += diffirentTimes;
+		}
+
+		for (int i = 1; i < utilitySpace.getDomain().getIssues().size(); i++) {
+			int diffirentTimes = 0;
+			String compare;
+			for (int j = 0; j < opponentsBidHistory.size(); j++) {
+				if (j > 0) {
+					compare = opponentsBidHistory.get(j - 1).getValue(i).toString();
+					if (!compare.equals(opponentsBidHistory.get(j).getValue(i).toString())) {
+						diffirentTimes++;
+					}
+				}
+			}
+			Double variance = 1.0-(Double.valueOf(diffirentTimes) / Double.valueOf(totalDiffentTimes));
+			opponentsIssueVariance.put(utilitySpace.getDomain().getIssues().get(i), variance);
+		}
+		System.out.println("方差列表" + opponentsIssueVariance);
 	}
 
 	public AbstractUtilitySpace getUtilitySpace() {
@@ -154,7 +190,6 @@ public class OppentNegotiationInfo {
 		this.round = round;
 	}
 
-
 	public HashMap<Issue, List<MyValueFrequency>> getOpponentFrequency() {
 		return opponentFrequency;
 	}
@@ -166,7 +201,6 @@ public class OppentNegotiationInfo {
 	public ArrayList<Bid> getOpponentsBidHistory() {
 		return opponentsBidHistory;
 	}
-
 
 	public Double getOpponentsAverage() {
 		return opponentsAverage;

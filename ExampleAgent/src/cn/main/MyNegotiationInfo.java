@@ -113,6 +113,9 @@ public class MyNegotiationInfo {
 			double initial = 0.1d;
 			while((pValueList.get(issueValue.getKey()) == null || pValueList.get(issueValue.getKey()).size() <= Math.ceil(prefectValues.size()/5)) && initial <= 1){
 				getSameValue(0, initial, issueValue, prefectValues);
+
+				oppentInfo.caluOpponentsIssueVariance();
+
 				initial += 0.1d;
 			}
 		}
