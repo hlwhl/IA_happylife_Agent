@@ -74,19 +74,6 @@ public class MyNegotiationInfo {
 		MyPrint.printPValueList(pValueList);
 	}
 
-	//获取pValueList方法
-	public Map<Issue, List<Value>> getPValueList(OppentNegotiationInfo oppent1Info,
-			OppentNegotiationInfo oppent2Info) {
-		pValueList = new HashMap<Issue, List<Value>>();
-		if (oppent1Info != null) {
-			optionPValueList(oppent1Info);
-		}
-		if (oppent2Info != null) {
-			optionPValueList(oppent2Info);
-		}
-		return pValueList;
-	}
-
 	private void optionPValueList(OppentNegotiationInfo oppentInfo) {
 		HashMap<Issue, List<MyValueFrequency>> opponentFrequency = oppentInfo.getOpponentFrequency();
 		for (Map.Entry<Issue, List<MyValueFrequency>> issueValue : opponentFrequency.entrySet()) {
@@ -124,4 +111,37 @@ public class MyNegotiationInfo {
 	private Integer getEndIndex(double endScale, int size) {
 		return (int) Math.floor(endScale * (size - 1));
 	}
+
+	public AbstractUtilitySpace getUtilitySpace() {
+		return utilitySpace;
+	}
+
+	public void setUtilitySpace(AbstractUtilitySpace utilitySpace) {
+		this.utilitySpace = utilitySpace;
+	}
+
+	public List<Issue> getIssues() {
+		return issues;
+	}
+
+	public void setIssues(List<Issue> issues) {
+		this.issues = issues;
+	}
+
+	public Map<Issue, List<MyValueEvaluation>> getPrefectOrder() {
+		return prefectOrder;
+	}
+
+	public void setPrefectOrder(Map<Issue, List<MyValueEvaluation>> prefectOrder) {
+		this.prefectOrder = prefectOrder;
+	}
+
+	public Map<Issue, List<Value>> getpValueList() {
+		return pValueList;
+	}
+
+	public void setpValueList(Map<Issue, List<Value>> pValueList) {
+		this.pValueList = pValueList;
+	}
+	
 }

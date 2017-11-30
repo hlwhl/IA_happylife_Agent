@@ -57,16 +57,23 @@ public class MyAgent extends AbstractNegotiationParty {
 		if (validActions.contains(Accept.class) && negotiationStrategy.selectAccept(lastReceivedOffer, time))
 			return new Accept(getPartyId(), lastReceivedOffer);
 		if (negotiationStrategy.selectEndNegotiation(time)) return new EndNegotiation(getPartyId());
-		else return OfferAction();
+		else try {
+			return OfferAction();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
-	private Action OfferAction() {
+	private Action OfferAction() throws Exception {
 
 		if (timeline.getTime() < 0.1) {
-			Bid bid = generateRandomBid();
-			while (getUtility(bid) < 0.9) {
-				bid = generateRandomBid();
-			}
+			
+			Bid bid = utilitySpace.getMaxUtilityBid();
+//			while (getUtility(bid) < 0.9) {
+//				bid = generateRandomBid();
+//			}
 			return new Offer(getPartyId(), bid);
 		}
 
@@ -74,7 +81,7 @@ public class MyAgent extends AbstractNegotiationParty {
 		Bid bid = null;
 		Random r = new Random();
 		HashMap<Integer, Value> bidP = new HashMap<Integer, Value>();
-		Map<Issue, List<Value>> pvl = myInfo.getPValueList(oppent1Info, oppent2Info);
+		Map<Issue, List<Value>> pvl = myInfo.getpValueList();
 		for (Map.Entry<Issue, List<Value>> issueValues : pvl.entrySet()) {
 			bidP.put(issueValues.getKey().getNumber(),
 					new ValueDiscrete(issueValues.getValue().get(r.nextInt(issueValues.getValue().size())).toString()));
