@@ -43,4 +43,9 @@ public class MyPrint {
 		}
 		System.out.println(" ");
 	}
+
+	public static void printThreshold(Double minThreshold, Double maxThreshold, Double averageThreshold) {
+		System.out.println("minThreshold : " + minThreshold + "; maxThreshold : " + maxThreshold + "; averageThreshold : " + averageThreshold);
+		
+	}
 }
