@@ -16,7 +16,7 @@ public class OppentNegotiationInfo {
 	private List<Issue> issues;
 	private HashMap<Issue, List<MyValueFrequency>> opponentFrequency;
 	private ArrayList<Bid> opponentsBidHistory = null;
-	private HashMap<Issue, Double> opponentsIssueVariance;
+	private LinkedHashMap<Issue, Double> opponentsIssueVariance;
 	private Double opponentsAverage;
 	private Double opponentsVariance;
 
@@ -37,7 +37,7 @@ public class OppentNegotiationInfo {
 		issues = utilitySpace.getDomain().getIssues();
 		opponentFrequency = new HashMap<Issue, List<MyValueFrequency>>();
 		opponentsBidHistory = new ArrayList<Bid>();
-		opponentsIssueVariance = new HashMap<Issue, Double>();
+		opponentsIssueVariance = new LinkedHashMap<Issue, Double>();
 		opponentsAverage = 0.0D;
 		opponentsVariance = 0.0D;
 		setOppentID(id);
@@ -135,13 +135,13 @@ public class OppentNegotiationInfo {
 	//计算对手Issue间的方差
 	public void caluOpponentsIssueVariance() {
 		int totalDiffentTimes = 0;
-		for (int i = 1; i < utilitySpace.getDomain().getIssues().size(); i++) {
+		for (int i = 0; i < utilitySpace.getDomain().getIssues().size(); i++) {
 			int diffirentTimes = 0;
 			String compare;
 			for (int j = 0; j < opponentsBidHistory.size(); j++) {
 				if (j > 0) {
-					compare = opponentsBidHistory.get(j - 1).getValue(i).toString();
-					if (!compare.equals(opponentsBidHistory.get(j).getValue(i).toString())) {
+					compare = opponentsBidHistory.get(j - 1).getValue(i+1).toString();
+					if (!compare.equals(opponentsBidHistory.get(j).getValue(i+1).toString())) {
 						diffirentTimes++;
 					}
 				}
@@ -149,13 +149,13 @@ public class OppentNegotiationInfo {
 			totalDiffentTimes += diffirentTimes;
 		}
 
-		for (int i = 1; i < utilitySpace.getDomain().getIssues().size(); i++) {
+		for (int i = 0; i < utilitySpace.getDomain().getIssues().size(); i++) {
 			int diffirentTimes = 0;
 			String compare;
 			for (int j = 0; j < opponentsBidHistory.size(); j++) {
 				if (j > 0) {
-					compare = opponentsBidHistory.get(j - 1).getValue(i).toString();
-					if (!compare.equals(opponentsBidHistory.get(j).getValue(i).toString())) {
+					compare = opponentsBidHistory.get(j - 1).getValue(i+1).toString();
+					if (!compare.equals(opponentsBidHistory.get(j).getValue(i+1).toString())) {
 						diffirentTimes++;
 					}
 				}
