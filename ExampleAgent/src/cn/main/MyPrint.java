@@ -1,9 +1,11 @@
 package cn.main;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import negotiator.AgentID;
 import negotiator.issue.Issue;
 import negotiator.issue.Value;
 
@@ -48,4 +50,22 @@ public class MyPrint {
 		System.out.println("minThreshold : " + minThreshold + "; maxThreshold : " + maxThreshold + "; averageThreshold : " + averageThreshold);
 		
 	}
+
+	public static void printIssueWeight(AgentID OppentID, Map<Issue, Double> opponentsIssueWeight) {
+		System.out.println("OppentID : " + OppentID + "--Tittle : opponentsIssueWeight");
+		for (Map.Entry<Issue, Double> issue : opponentsIssueWeight.entrySet()) {
+			System.out.println(" Issue : " + issue.getKey() + "--" + issue.getValue());
+		}
+		System.out.println(" ");
+	}
+
+	public static void printIssueVariance(AgentID OppentID, LinkedHashMap<Issue, Double> opponentsIssueVariance) {
+		System.out.println("OppentID : " + OppentID + "--Tittle : opponentsIssueVariance");
+		for (Map.Entry<Issue, Double> issue : opponentsIssueVariance.entrySet()) {
+			System.out.println(" Issue : " + issue.getKey() + "--" + issue.getValue());
+		}
+		System.out.println(" ");
+		
+	}
+
 }

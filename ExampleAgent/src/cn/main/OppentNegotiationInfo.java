@@ -19,18 +19,8 @@ public class OppentNegotiationInfo {
 	private LinkedHashMap<Issue, Double> opponentsIssueVariance;
 	private Double opponentsAverage;
 	private Double opponentsVariance;
-
-	private int round = 0;
-
+	private CalculateScoreSystem calculateSystem;
 	private List<MyValueFrequency> frequencys;
-
-	public void setOppentID(AgentID oppentID) {
-		OppentID = oppentID;
-	}
-
-	public AgentID getOppentID() {
-		return OppentID;
-	}
 
 	public OppentNegotiationInfo(AbstractUtilitySpace utilitySpace, AgentID id) {
 		this.utilitySpace = utilitySpace;
@@ -42,12 +32,15 @@ public class OppentNegotiationInfo {
 		opponentsVariance = 0.0D;
 		setOppentID(id);
 		initOpponentValueFrequency();
+		calculateSystem = new CalculateScoreSystem(this);
 	}
 
-	public void addOppentHistory(Bid b) {
-		this.round++;
+	public void optionOppentInfo(Bid b) {
 		opponentsBidHistory.add(b);
 		updateFrequencyList(b);
+		caluOpponentsIssueVariance();
+		calculateSystem.updateFrequency(opponentFrequency);
+		calculateSystem.updateWeight(opponentsIssueVariance);
 	}
 
 	private void initOpponentValueFrequency() {
@@ -64,17 +57,6 @@ public class OppentNegotiationInfo {
 		}
 	}
 
-	public void printInfo() {
-		System.out.println("round:" + round);
-		for (Map.Entry<Issue, List<MyValueFrequency>> oppoInfo : opponentFrequency.entrySet()) {
-			System.out.println("Issue" + oppoInfo.getKey());
-			for (int i = 0; i < oppoInfo.getValue().size(); i++) {
-				System.out.println(
-						"Name" + oppoInfo.getValue().get(i).getValue().toString() + "Frequency" + oppoInfo.getValue()
-								.get(i).getFrequency());
-			}
-		}
-	}
 
 	public Bid getMaxFrequencyBid() {
 		HashMap<Integer, Value> bidP = new HashMap<Integer, Value>();
@@ -163,9 +145,9 @@ public class OppentNegotiationInfo {
 			Double variance = 1.0-(Double.valueOf(diffirentTimes) / Double.valueOf(totalDiffentTimes));
 			opponentsIssueVariance.put(utilitySpace.getDomain().getIssues().get(i), variance);
 		}
-		System.out.println("方差列表" + opponentsIssueVariance);
+		MyPrint.printIssueVariance(OppentID, opponentsIssueVariance);
 	}
-
+	
 	public AbstractUtilitySpace getUtilitySpace() {
 		return utilitySpace;
 	}
@@ -180,14 +162,6 @@ public class OppentNegotiationInfo {
 
 	public void setIssues(List<Issue> issues) {
 		this.issues = issues;
-	}
-
-	public int getRound() {
-		return round;
-	}
-
-	public void setRound(int round) {
-		this.round = round;
 	}
 
 	public HashMap<Issue, List<MyValueFrequency>> getOpponentFrequency() {
@@ -217,5 +191,42 @@ public class OppentNegotiationInfo {
 	public void setOpponentsVariance(Double opponentVariance) {
 		this.opponentsVariance = opponentVariance;
 	}
+
+	public LinkedHashMap<Issue, Double> getOpponentsIssueVariance() {
+		return opponentsIssueVariance;
+	}
+
+	public void setOpponentsIssueVariance(LinkedHashMap<Issue, Double> opponentsIssueVariance) {
+		this.opponentsIssueVariance = opponentsIssueVariance;
+	}
+
+	public CalculateScoreSystem getCalculateSystem() {
+		return calculateSystem;
+	}
+
+	public void setCalculateSystem(CalculateScoreSystem calculateSystem) {
+		this.calculateSystem = calculateSystem;
+	}
+
+	public List<MyValueFrequency> getFrequencys() {
+		return frequencys;
+	}
+
+	public void setFrequencys(List<MyValueFrequency> frequencys) {
+		this.frequencys = frequencys;
+	}
+
+	public void setOpponentsBidHistory(ArrayList<Bid> opponentsBidHistory) {
+		this.opponentsBidHistory = opponentsBidHistory;
+	}
+
+	public AgentID getOppentID() {
+		return OppentID;
+	}
+
+	public void setOppentID(AgentID oppentID) {
+		OppentID = oppentID;
+	}
+
 
 }

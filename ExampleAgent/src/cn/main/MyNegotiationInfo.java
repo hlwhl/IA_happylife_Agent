@@ -68,19 +68,6 @@ public class MyNegotiationInfo {
 
 	}
 
-	public void optionPValueList(OppentNegotiationInfo oppent1Info,
-			OppentNegotiationInfo oppent2Info) {
-		pValueList = new HashMap<Issue, List<Value>>();
-		if (oppent1Info != null) {
-			optionPValueList(oppent1Info);
-		}
-		if (oppent2Info != null) {
-			optionPValueList(oppent2Info);
-		}
-		MyPrint.printPValueList(pValueList);
-		getThreshold();
-	}
-
 	private void getThreshold() {
 		minThreshold = 1.0d;
 		maxThreshold = 0.0d;
@@ -106,19 +93,19 @@ public class MyNegotiationInfo {
 		return number;
 	}
 
-	private void optionPValueList(OppentNegotiationInfo oppentInfo) {
+	public void optionPValueList(OppentNegotiationInfo oppentInfo) {
+		if (pValueList == null) pValueList = new HashMap<Issue, List<Value>>();
 		HashMap<Issue, List<MyValueFrequency>> opponentFrequency = oppentInfo.getOpponentFrequency();
 		for (Map.Entry<Issue, List<MyValueFrequency>> issueValue : opponentFrequency.entrySet()) {
 			List<MyValueEvaluation> prefectValues = prefectOrder.get(issueValue.getKey());
 			double initial = 0.1d;
 			while((pValueList.get(issueValue.getKey()) == null || pValueList.get(issueValue.getKey()).size() <= Math.ceil(prefectValues.size()/5)) && initial <= 1){
 				getSameValue(0, initial, issueValue, prefectValues);
-
-				oppentInfo.caluOpponentsIssueVariance();
-
 				initial += 0.1d;
 			}
 		}
+		MyPrint.printPValueList(pValueList);
+		getThreshold();
 	}
 
 
