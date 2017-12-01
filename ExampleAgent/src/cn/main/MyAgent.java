@@ -62,6 +62,11 @@ public class MyAgent extends AbstractNegotiationParty {
 		if (timeline.getTime() < 0.15) {
 			Bid bid = utilitySpace.getMaxUtilityBid();
 			return new Offer(getPartyId(), bid);
+		} else {
+			Double time = timeline.getTime();
+			Double threshold = time * -(Double.parseDouble(6 + "") / Double.parseDouble(17 + ""))
+					+ Double.parseDouble(179 + "") / Double.parseDouble(170 + "");
+			
 		}
 		// 从myInfo.pValueList随机组合bid
 		Bid bid = negotiationStrategy.getRandomFromPValueList(myInfo.getpValueList());
