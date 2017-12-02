@@ -54,13 +54,18 @@ public class MyAgent extends AbstractNegotiationParty {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		return OfferAction();
 	}
 
-	private Action OfferAction() throws Exception {
+	private Action OfferAction() {
 
 		if (timeline.getTime() < 0.15) {
-			Bid bid = utilitySpace.getMaxUtilityBid();
+			Bid bid = null;
+			try {
+				bid = utilitySpace.getMaxUtilityBid();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			return new Offer(getPartyId(), bid);
 		} else {
 			Bid bid = negotiationStrategy.normalChooseBid(timeline.getTime(), oppent1Info);

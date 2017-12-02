@@ -25,7 +25,12 @@ public class CalculateScoreSystem {
 			for (Map.Entry<Value, Double> value : frequency.getValue().entrySet()) {
 				BigDecimal b = new BigDecimal(value.getValue());  
 				double valueD = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-				BigDecimal bb = new BigDecimal(weight.get(frequency.getKey()));  
+				BigDecimal bb;
+				if (weight.get(frequency.getKey()).equals(Double.NaN)) {
+					bb = new BigDecimal(0);
+				} else {
+					bb = new BigDecimal(weight.get(frequency.getKey()));
+				}
 				double valueDD = bb.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 				BigDecimal bbb = new BigDecimal(valueD*valueDD);  
 				double valueDDD = bbb.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -144,6 +149,6 @@ public class CalculateScoreSystem {
 	}
 
 
-	
+
 
 }

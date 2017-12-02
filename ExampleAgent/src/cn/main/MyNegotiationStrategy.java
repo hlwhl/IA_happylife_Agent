@@ -96,7 +96,7 @@ public class MyNegotiationStrategy {
 
 	public Bid normalChooseBid(double time, OppentNegotiationInfo oppent1Info) {
 		Double currentThreshold = time * -(Double.parseDouble(6 + "") / Double.parseDouble(17 + ""))
-				+ Double.parseDouble(179 + "") / Double.parseDouble(170 + "");
+				+ Double.parseDouble(179 + "") / Double.parseDouble(170 + "");  //TODO mod
 		Set<Bid> possibleBids = new HashSet<Bid>();
 		int num = 0;
 		while(num < 5000){
@@ -109,12 +109,15 @@ public class MyNegotiationStrategy {
 		System.out.println("------------------currentThreshold-------------------" + currentThreshold);
 		System.out.println("------------------possibleBidsize-------------------" + possibleBids.size());
 		System.out.println("------------------lastSuccessFindBidThreshold-------------------" + lastSuccessFindBidThreshold);
-		if (possibleBids.size() < 5)
-			return lastBid;
+		if (possibleBids.size() < 5) return lastBid;
 		Bid maxScoreBid = oppent1Info.getCalculateSystem().getMaxScoreBid(possibleBids);
-		lastBid = maxScoreBid;
-//		lastSuccessFindBidThreshold = currentThreshold;
-		return maxScoreBid;
+
+		//		lastSuccessFindBidThreshold = currentThreshold;
+		if (maxScoreBid != null) {
+			lastBid = maxScoreBid;
+			return maxScoreBid;
+		}
+		return lastBid;
 	}
 
 	
