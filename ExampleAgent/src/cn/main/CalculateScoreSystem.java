@@ -4,10 +4,13 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import negotiator.Bid;
 import negotiator.issue.Issue;
+import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
+import negotiator.issue.ValueDiscrete;
 
 public class CalculateScoreSystem {
 
@@ -43,13 +46,35 @@ public class CalculateScoreSystem {
 		weight = new HashMap<Issue, Double>();
 	}
 
-	public Bid getMaxScoreBid(List<Bid> bids) {
-		return null;
+	public Bid getMaxScoreBid(Set<Bid> bids) {
+		Bid maxBid = null;
+		Double maxScore = 0d;
+		for (Bid bid : bids) {
+			Double scoreByBid = getScoreByBid(bid);
+			if (scoreByBid >= maxScore){
+				maxBid = bid;
+				maxScore = scoreByBid;
+			}
+		}
+		return maxBid;
 	}
 
 	public Double getScoreByBid(Bid bid) {
 		if (bid == null) return 0d;
-		return null;
+		Double score = 0d;
+		List<Issue> issues = bid.getIssues();
+		int N = issues.size();
+		for (int i = 0; i < N; i++) {
+			IssueDiscrete di = (IssueDiscrete) issues.get(i);
+			Double weight = getWeight().get(di);
+			int M = di.getNumberOfValues();
+			for (int j = 0; j < M; j++) {
+				ValueDiscrete value = di.getValue(j);
+				Map<Value, Double> values = getFrequency().get(di);
+				score += values.get(value)*weight;
+			}
+		}
+		return score;
 	}
 
 	public Map<Issue, Double> getWeight() {
@@ -76,7 +101,6 @@ public class CalculateScoreSystem {
 		this.oppentInfo = oppentInfo;
 	}
 
-	
 
 	
 

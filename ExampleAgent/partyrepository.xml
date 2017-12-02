@@ -366,9 +366,6 @@
             <partyRepItem classPath="bin/cn/other/Atlas32016.class">
                 <properties/>
             </partyRepItem>
-            <partyRepItem classPath="bin/cn/main/AgentReduce.class">
-                <properties/>
-            </partyRepItem>
             <partyRepItem classPath="bin/cn/main/MyAgent.class">
                 <properties/>
             </partyRepItem>
