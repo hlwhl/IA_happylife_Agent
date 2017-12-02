@@ -1,5 +1,6 @@
 package cn.main;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -33,7 +34,7 @@ public class MyNegotiationInfo {
 		initPrefectOrder();
 		MyPrint.printPrefectOrder(prefectOrder);
 	}
-
+	private Map<Issue, Map<Value, String>> scoreCondition = new HashMap<Issue, Map<Value, String>>(); 
 	private void initPrefectOrder() throws Exception {
 		prefectOrder = new HashMap<Issue, List<MyValueEvaluation>>();
 		int N = issues.size();
@@ -42,15 +43,30 @@ public class MyNegotiationInfo {
 			EvaluatorDiscrete de = (EvaluatorDiscrete) ((AdditiveUtilitySpace) utilitySpace).getEvaluator(i + 1);
 			int M = di.getNumberOfValues();
 			List<MyValueEvaluation> values = new ArrayList<MyValueEvaluation>();
+			
+			//打印配置文件信息
+			Map<Value, String> valueInfo = new HashMap<Value, String>();
 			for (int j = 0; j < M; j++) {
 				MyValueEvaluation value = new MyValueEvaluation();
 				value.setEvaluation(de.getEvaluation(di.getValue(j)).doubleValue());
 				value.setValue(di.getValue(j));
 				values.add(value);
+				
+				
+				BigDecimal b = new BigDecimal(de.getEvaluation(di.getValue(j)).doubleValue());  
+				double valueD = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				BigDecimal bb = new BigDecimal(de.getWeight());  
+				double valueDD = bb.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				BigDecimal bbb = new BigDecimal(valueD*valueDD);  
+				double valueDDD = bbb.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				valueInfo.put(di.getValue(j), valueD + " x " + valueDD + " = " + valueDDD);
 			}
+			scoreCondition.put(di, valueInfo);
 			sort(values);
 			prefectOrder.put(di, values);
+			
 		}
+		MyPrint.printPreferenceInfo(scoreCondition);
 	}
 
 	private void sort(List<MyValueEvaluation> frequencys) {

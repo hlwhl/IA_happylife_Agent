@@ -94,7 +94,10 @@ public class MyAgent extends AbstractNegotiationParty {
 					myInfo.optionPValueList(oppentInfo);
 					updatePValueTime += 0.1D;
 					MyPrint.printOpponentFrequency(oppentInfo.getOpponentFrequency());
+					// 打印对方配置文件详细得分
+					oppentInfo.getCalculateSystem().printScoreDetail();
 				}
+				System.out.println();
 			} else if (action instanceof Accept) {
 				// TODO
 			}

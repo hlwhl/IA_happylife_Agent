@@ -1,5 +1,6 @@
 package cn.main;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -65,6 +66,20 @@ public class MyPrint {
 			System.out.println(" Issue : " + issue.getKey() + "--" + issue.getValue());
 		}
 		System.out.println(" ");
+		
+	}
+
+	// 打印配置文件详细分数信息
+	public static void printPreferenceInfo(Map<Issue, Map<Value, String>> scoreCondition) {
+		System.out.println("自己配置文件详细得分");
+		for (Map.Entry<Issue, Map<Value, String>> issue : scoreCondition.entrySet()) {
+			System.out.println("issue: " + issue.getKey());
+			for (Map.Entry<Value, String> value : issue.getValue().entrySet()) {
+				System.out.println(value.getKey() + " " + value.getValue() + " ");
+			}
+			System.out.println("");
+		}
+		
 		
 	}
 
