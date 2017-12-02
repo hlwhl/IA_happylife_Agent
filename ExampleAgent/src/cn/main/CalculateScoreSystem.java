@@ -9,19 +9,18 @@ import java.util.Set;
 
 import negotiator.Bid;
 import negotiator.issue.Issue;
-import negotiator.issue.IssueDiscrete;
 import negotiator.issue.Value;
-import negotiator.issue.ValueDiscrete;
 
 public class CalculateScoreSystem {
 
 	private Map<Issue, Map<Value, Double>> frequency;
+	private Map<Issue, Map<Value, Double>> frequencyTen;
 	private Map<Issue, Double> weight;
 	private OppentNegotiationInfo oppentInfo;
 	
 	public void printScoreDetail(){
 		System.out.println("对方配置文件详细得分");
-		for (Map.Entry<Issue, Map<Value, Double>> frequency : frequency.entrySet()) {
+		for (Map.Entry<Issue, Map<Value, Double>> frequency : frequencyTen.entrySet()) {
 			System.out.println("issue: " + frequency.getKey());
 			for (Map.Entry<Value, Double> value : frequency.getValue().entrySet()) {
 				BigDecimal b = new BigDecimal(value.getValue());  
@@ -37,13 +36,25 @@ public class CalculateScoreSystem {
 		}
 	}
 	
-	public void updateFrequency(HashMap<Issue, List<MyValueFrequency>> opponentFrequency) {
+	public void updateFrequency(HashMap<Issue, List<MyValueFrequency>> opponentFrequency, int round) {
 		for (Map.Entry<Issue, List<MyValueFrequency>> frequencys: opponentFrequency.entrySet()) {
 			Map<Value, Double> values = new HashMap<Value, Double>();
 			for (MyValueFrequency myValueFrequency : frequencys.getValue()) {
 				values.put(myValueFrequency.getValue(), Double.parseDouble(myValueFrequency.getFrequency() + ""));
 			}
 			frequency.put(frequencys.getKey(), values);
+		}
+		updateFrequencyTen(round);
+	}
+	
+	public void updateFrequencyTen(int round){
+		
+		for (Map.Entry<Issue, Map<Value, Double>> issue : frequency.entrySet()) {
+			Map<Value, Double> newValue = new HashMap<Value, Double>();
+			for (Map.Entry<Value, Double> value : issue.getValue().entrySet()) {
+				newValue.put(value.getKey(), value.getValue()*10/round);
+			}
+			frequencyTen.put(issue.getKey(), newValue);
 		}
 	}
 	
@@ -62,10 +73,13 @@ public class CalculateScoreSystem {
 	public CalculateScoreSystem(OppentNegotiationInfo oppentInfo) {
 		this.oppentInfo = oppentInfo;
 		frequency = new HashMap<Issue, Map<Value, Double>>();
+		frequencyTen = new HashMap<Issue, Map<Value, Double>>();
 		weight = new HashMap<Issue, Double>();
 	}
 
 	public Bid getMaxScoreBid(Set<Bid> bids) {
+		printScoreDetail();
+		
 		Bid maxBid = null;
 		Double maxScore = 0d;
 		for (Bid bid : bids) {
@@ -74,6 +88,8 @@ public class CalculateScoreSystem {
 				maxBid = bid;
 				maxScore = scoreByBid;
 			}
+			System.out.println(bid + " score : " + scoreByBid);
+			
 		}
 		return maxBid;
 	}
@@ -84,13 +100,12 @@ public class CalculateScoreSystem {
 		List<Issue> issues = bid.getIssues();
 		int N = issues.size();
 		for (int i = 0; i < N; i++) {
-			IssueDiscrete di = (IssueDiscrete) issues.get(i);
-			Double weight = getWeight().get(di);
-			int M = di.getNumberOfValues();
-			for (int j = 0; j < M; j++) {
-				ValueDiscrete value = di.getValue(j);
-				Map<Value, Double> values = getFrequency().get(di);
-				score += values.get(value)*weight;
+			Double weight = getWeight().get(issues.get(i));
+			Map<Value, Double> valueFens = getFrequencyTen().get(issues.get(i));
+			for (Map.Entry<Value, Double> valueFen : valueFens.entrySet()) {
+				if (valueFen.getKey().equals(bid.getValue(i + 1))){
+					score += valueFen.getValue()*weight;
+				}
 			}
 		}
 		return score;
@@ -118,6 +133,14 @@ public class CalculateScoreSystem {
 
 	public void setOppentInfo(OppentNegotiationInfo oppentInfo) {
 		this.oppentInfo = oppentInfo;
+	}
+
+	public Map<Issue, Map<Value, Double>> getFrequencyTen() {
+		return frequencyTen;
+	}
+
+	public void setFrequencyTen(Map<Issue, Map<Value, Double>> frequencyTen) {
+		this.frequencyTen = frequencyTen;
 	}
 
 

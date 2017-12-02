@@ -35,11 +35,11 @@ public class OppentNegotiationInfo {
 		calculateSystem = new CalculateScoreSystem(this);
 	}
 
-	public void optionOppentInfo(Bid b) {
+	public void optionOppentInfo(Bid b, int round) {
 		opponentsBidHistory.add(b);
 		updateFrequencyList(b);
 		caluOpponentsIssueVariance();
-		calculateSystem.updateFrequency(opponentFrequency);
+		calculateSystem.updateFrequency(opponentFrequency, round);
 		calculateSystem.updateWeight(opponentsIssueVariance);
 	}
 

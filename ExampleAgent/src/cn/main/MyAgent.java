@@ -88,7 +88,7 @@ public class MyAgent extends AbstractNegotiationParty {
 					oppentInfo = oppent2Info;
 				}
 				Offer offer = (Offer) action;
-				oppentInfo.optionOppentInfo(offer.getBid());
+				oppentInfo.optionOppentInfo(offer.getBid(), round);
 				double time = timeLineInfo.getTime();
 				if (time > updatePValueTime) {
 					myInfo.optionPValueList(oppentInfo);

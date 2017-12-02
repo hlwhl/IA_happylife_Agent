@@ -99,7 +99,7 @@ public class MyNegotiationStrategy {
 				+ Double.parseDouble(179 + "") / Double.parseDouble(170 + "");
 		Set<Bid> possibleBids = new HashSet<Bid>();
 		int num = 0;
-		while(num < 1000){
+		while(num < 5000){
 			Bid bid = generateRandomBid();
 			Double utility = utilitySpace.getUtility(bid);
 			if (utility >= currentThreshold && utility <= 1d)
@@ -109,7 +109,7 @@ public class MyNegotiationStrategy {
 		System.out.println("------------------currentThreshold-------------------" + currentThreshold);
 		System.out.println("------------------possibleBidsize-------------------" + possibleBids.size());
 		System.out.println("------------------lastSuccessFindBidThreshold-------------------" + lastSuccessFindBidThreshold);
-		if (possibleBids.size() < 20)
+		if (possibleBids.size() < 5)
 			return lastBid;
 		Bid maxScoreBid = oppent1Info.getCalculateSystem().getMaxScoreBid(possibleBids);
 		lastBid = maxScoreBid;
