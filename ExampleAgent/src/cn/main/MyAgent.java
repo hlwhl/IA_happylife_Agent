@@ -68,7 +68,7 @@ public class MyAgent extends AbstractNegotiationParty {
 			}
 			return new Offer(getPartyId(), bid);
 		} else {
-			Bid bid = negotiationStrategy.normalChooseBid(timeline.getTime(), oppent1Info);
+			Bid bid = negotiationStrategy.normalChooseBid(timeline.getTime(), oppent1Info, oppent2Info);
 			return new Offer(getPartyId(), bid);
 		}
 	}
@@ -92,6 +92,7 @@ public class MyAgent extends AbstractNegotiationParty {
 				} else if (oppent2Info.getOppentID().equals(sender)) {
 					oppentInfo = oppent2Info;
 				}
+				
 				Offer offer = (Offer) action;
 				oppentInfo.optionOppentInfo(offer.getBid(), round);
 				double time = timeLineInfo.getTime();
@@ -99,8 +100,6 @@ public class MyAgent extends AbstractNegotiationParty {
 					myInfo.optionPValueList(oppentInfo);
 					updatePValueTime += 0.1D;
 					MyPrint.printOpponentFrequency(oppentInfo.getOpponentFrequency());
-					// 打印对方配置文件详细得分
-					oppentInfo.getCalculateSystem().printScoreDetail();
 				}
 				System.out.println();
 			} else if (action instanceof Accept) {
@@ -112,18 +111,18 @@ public class MyAgent extends AbstractNegotiationParty {
 		}
 
 		// 输出信息
-		if (timeline.getTime() > 1) {
-
-			// 生成猜测到的对方最大utility的Bid
-			// TODO:使用最大bid计算
-			Bid max1Bid = oppent1Info.getMaxFrequencyBid();
-			System.out.println(max1Bid.toString());
-			System.out.println("对手1最大bid在我们agent的utility" + utilitySpace.getUtility(max1Bid));
-			Bid max2Bid = oppent2Info.getMaxFrequencyBid();
-			System.out.println(max2Bid.toString());
-			System.out.println("对手2最大bid在我们agentutility" + utilitySpace.getUtility(max2Bid));
-
-		}
+//		if (timeline.getTime() > 1) {
+//
+//			// 生成猜测到的对方最大utility的Bid
+//			// TODO:使用最大bid计算
+//			Bid max1Bid = oppent1Info.getMaxFrequencyBid();
+//			System.out.println(max1Bid.toString());
+//			System.out.println("对手1最大bid在我们agent的utility" + utilitySpace.getUtility(max1Bid));
+//			Bid max2Bid = oppent2Info.getMaxFrequencyBid();
+//			System.out.println(max2Bid.toString());
+//			System.out.println("对手2最大bid在我们agentutility" + utilitySpace.getUtility(max2Bid));
+//
+//		}
 
 	}
 

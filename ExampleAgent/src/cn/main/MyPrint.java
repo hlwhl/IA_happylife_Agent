@@ -1,5 +1,6 @@
 package cn.main;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -78,8 +79,30 @@ public class MyPrint {
 			}
 			System.out.println("");
 		}
-		
-		
+	}
+	
+	//打印对方配置文件信息
+	public static void printScoreDetail(AgentID agentID, Map<Issue, Map<Value, Double>> frequencyTen, Map<Issue, Double> weight){
+		System.out.println(agentID + "配置文件详细得分");
+		for (Map.Entry<Issue, Map<Value, Double>> frequency : frequencyTen.entrySet()) {
+			System.out.println("issue: " + frequency.getKey());
+			for (Map.Entry<Value, Double> value : frequency.getValue().entrySet()) {
+				BigDecimal b = new BigDecimal(value.getValue());  
+				double valueD = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				BigDecimal bb;
+				if (weight.get(frequency.getKey()).equals(Double.NaN)) {
+					bb = new BigDecimal(0);
+				} else {
+					bb = new BigDecimal(weight.get(frequency.getKey()));
+				}
+				double valueDD = bb.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				BigDecimal bbb = new BigDecimal(valueD*valueDD);  
+				double valueDDD = bbb.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				String detail = valueD + " x " + valueDD + " = " + valueDDD;
+				System.out.println(value.getKey() + " " + detail + " ");
+			}
+			System.out.println("");
+		}
 	}
 
 }

@@ -1,6 +1,5 @@
 package cn.main;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,29 +16,6 @@ public class CalculateScoreSystem {
 	private Map<Issue, Map<Value, Double>> frequencyTen;
 	private Map<Issue, Double> weight;
 	private OppentNegotiationInfo oppentInfo;
-	
-	public void printScoreDetail(){
-		System.out.println("对方配置文件详细得分");
-		for (Map.Entry<Issue, Map<Value, Double>> frequency : frequencyTen.entrySet()) {
-			System.out.println("issue: " + frequency.getKey());
-			for (Map.Entry<Value, Double> value : frequency.getValue().entrySet()) {
-				BigDecimal b = new BigDecimal(value.getValue());  
-				double valueD = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-				BigDecimal bb;
-				if (weight.get(frequency.getKey()).equals(Double.NaN)) {
-					bb = new BigDecimal(0);
-				} else {
-					bb = new BigDecimal(weight.get(frequency.getKey()));
-				}
-				double valueDD = bb.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-				BigDecimal bbb = new BigDecimal(valueD*valueDD);  
-				double valueDDD = bbb.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-				String detail = valueD + " x " + valueDD + " = " + valueDDD;
-				System.out.println(value.getKey() + " " + detail + " ");
-			}
-			System.out.println("");
-		}
-	}
 	
 	public void updateFrequency(HashMap<Issue, List<MyValueFrequency>> opponentFrequency, int round) {
 		for (Map.Entry<Issue, List<MyValueFrequency>> frequencys: opponentFrequency.entrySet()) {
@@ -83,8 +59,7 @@ public class CalculateScoreSystem {
 	}
 
 	public Bid getMaxScoreBid(Set<Bid> bids) {
-		printScoreDetail();
-		
+		MyPrint.printScoreDetail(oppentInfo.getOppentID(), frequencyTen, weight);
 		Bid maxBid = null;
 		Double maxScore = 0d;
 		for (Bid bid : bids) {

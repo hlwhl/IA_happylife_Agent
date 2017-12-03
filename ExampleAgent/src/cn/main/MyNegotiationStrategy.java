@@ -94,12 +94,12 @@ public class MyNegotiationStrategy {
 		return bid;
 	}
 
-	public Bid normalChooseBid(double time, OppentNegotiationInfo oppent1Info) {
+	public Bid normalChooseBid(double time, OppentNegotiationInfo oppent1Info, OppentNegotiationInfo oppent2Info) {
 		Double currentThreshold = time * -(Double.parseDouble(6 + "") / Double.parseDouble(17 + ""))
 				+ Double.parseDouble(179 + "") / Double.parseDouble(170 + "");  //TODO mod
 		Set<Bid> possibleBids = new HashSet<Bid>();
 		int num = 0;
-		while(num < 5000){
+		while(num < 15000){
 			Bid bid = generateRandomBid();
 			Double utility = utilitySpace.getUtility(bid);
 			if (utility >= currentThreshold && utility <= 1d)
@@ -110,9 +110,8 @@ public class MyNegotiationStrategy {
 		System.out.println("------------------possibleBidsize-------------------" + possibleBids.size());
 		System.out.println("------------------lastSuccessFindBidThreshold-------------------" + lastSuccessFindBidThreshold);
 		if (possibleBids.size() < 5) return lastBid;
-		Bid maxScoreBid = oppent1Info.getCalculateSystem().getMaxScoreBid(possibleBids);
-
-		//		lastSuccessFindBidThreshold = currentThreshold;
+		Bid maxScoreBid = getMaxScoreBid(possibleBids, oppent1Info, oppent2Info);
+		// lastSuccessFindBidThreshold = currentThreshold;
 		if (maxScoreBid != null) {
 			lastBid = maxScoreBid;
 			return maxScoreBid;
@@ -121,6 +120,38 @@ public class MyNegotiationStrategy {
 	}
 
 	
+	private Bid getMaxScoreBid(Set<Bid> possibleBids, OppentNegotiationInfo oppent1Info,
+			OppentNegotiationInfo oppent2Info) {
+		if (oppent1Info == null && oppent2Info == null) return lastBid;
+		CalculateScoreSystem oppent1cal = null;
+		CalculateScoreSystem oppent2cal = null;
+		if (oppent1Info != null)
+			oppent1cal = oppent1Info.getCalculateSystem();
+		if (oppent2Info != null)
+			oppent2cal = oppent2Info.getCalculateSystem();
+		if (oppent1cal != null)
+			MyPrint.printScoreDetail(oppent1Info.getOppentID(), oppent1cal.getFrequencyTen(), oppent1cal.getWeight());
+		if (oppent2cal != null)
+			MyPrint.printScoreDetail(oppent2Info.getOppentID(), oppent2cal.getFrequencyTen(), oppent2cal.getWeight());
+		
+		Bid maxBid = null;
+		Double maxScore = 0d;
+		for (Bid bid : possibleBids) {
+			Double scoreByBid = 0d;
+			if (oppent1cal != null)
+				scoreByBid += oppent1cal.getScoreByBid(bid);
+			if (oppent2cal != null)
+				scoreByBid += oppent2cal.getScoreByBid(bid);
+			if (scoreByBid >= maxScore){
+				maxBid = bid;
+				maxScore = scoreByBid;
+			}
+//			System.out.println(bid + " score : " + scoreByBid);
+			
+		}
+		return maxBid;
+	}
+
 	protected Bid generateRandomBid() {
         try {
             HashMap<Integer, Value> values = new HashMap<Integer, Value>();
