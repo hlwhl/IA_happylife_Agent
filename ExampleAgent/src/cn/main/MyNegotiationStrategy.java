@@ -148,10 +148,10 @@ public class MyNegotiationStrategy {
 		}
 		averageUtility=totalUtility/pValueList.size();
 		targetUtility = (maxUtility - minUtility) * 0.75 + minUtility;
-		if(targetUtility>averageUtility){
-			return (targetUtility-1d)*time+1;   //y=at+b
+		if ((targetUtility - 1d) * time + 1 > averageUtility) {
+			return (targetUtility - 1d) * time + 1 ;   //y=at+b
 		}
-		return (averageUtility - 1d) * time + 1;
+		return averageUtility;
 	}
 
 
