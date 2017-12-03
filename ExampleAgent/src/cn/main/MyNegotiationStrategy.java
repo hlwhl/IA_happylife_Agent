@@ -21,6 +21,7 @@ public class MyNegotiationStrategy {
 	private Bid lastBid;
 	private Double lastSuccessFindBidTime = 0.15;
 	private Double lastSuccessFindBidThreshold = 1d;
+	private Double currentThreshold = 1d;
 
 	public MyNegotiationStrategy(AbstractUtilitySpace utilitySpace) {
 		this.utilitySpace = utilitySpace;
@@ -35,38 +36,38 @@ public class MyNegotiationStrategy {
 
 	public boolean selectAccept(Bid lastReceivedOffer, double time) {
 		double u = utilitySpace.getUtility(lastReceivedOffer);
-		double utility = 0;
-		if (time <= 0.25D) {
-			utility = 1.0D - time * 0.4D;
-		}
-		if ((time > 0.25D) && (time <= 0.375D)) {
-			utility = 0.9D + (time - 0.25D) * 0.4D;
-		}
-		if ((time > 0.375D) && (time <= 0.5D)) {
-			utility = 0.95D - (time - 0.375D) * 0.4D;
-		}
-		if ((time > 0.5D) && (time <= 0.6D)) {
-			utility = 0.9D - (time - 0.5D);
-		}
-		if ((time > 0.6D) && (time <= 0.7D)) {
-			utility = 0.8D + (time - 0.6D) * 2.0D;
-		}
-		if ((time > 0.7D) && (time <= 0.8D)) {
-			utility = 1.0D - (time - 0.7D) * 3.0D;
-		}
-		if ((time > 0.8D) && (time <= 0.9D)) {
-			utility = 0.7D + (time - 0.8D) * 1.0D;
-		}
-		if ((time > 0.9D) && (time <= 0.95D)) {
-			utility = 0.8D - (time - 0.9D) * 6.0D;
-		}
-		if (time > 0.95D) {
-			utility = 0.5D + (time - 0.95D) * 4.0D;
-		}
-		if (time > 1) {
-			utility = 0.8;
-		}
-		return u > utility;
+//		double utility = 0;
+//		if (time <= 0.25D) {
+//			utility = 1.0D - time * 0.4D;
+//		}
+//		if ((time > 0.25D) && (time <= 0.375D)) {
+//			utility = 0.9D + (time - 0.25D) * 0.4D;
+//		}
+//		if ((time > 0.375D) && (time <= 0.5D)) {
+//			utility = 0.95D - (time - 0.375D) * 0.4D;
+//		}
+//		if ((time > 0.5D) && (time <= 0.6D)) {
+//			utility = 0.9D - (time - 0.5D);
+//		}
+//		if ((time > 0.6D) && (time <= 0.7D)) {
+//			utility = 0.8D + (time - 0.6D) * 2.0D;
+//		}
+//		if ((time > 0.7D) && (time <= 0.8D)) {
+//			utility = 1.0D - (time - 0.7D) * 3.0D;
+//		}
+//		if ((time > 0.8D) && (time <= 0.9D)) {
+//			utility = 0.7D + (time - 0.8D) * 1.0D;
+//		}
+//		if ((time > 0.9D) && (time <= 0.95D)) {
+//			utility = 0.8D - (time - 0.9D) * 6.0D;
+//		}
+//		if (time > 0.95D) {
+//			utility = 0.5D + (time - 0.95D) * 4.0D;
+//		}
+//		if (time > 1) {
+//			utility = 0.8;
+//		}
+		return u > currentThreshold;
 	}
 
 	public boolean selectEndNegotiation(double time) {
@@ -98,7 +99,8 @@ public class MyNegotiationStrategy {
 			MyNegotiationInfo myInfo) {
 		//		Double currentThreshold = time * -(Double.parseDouble(6 + "") / Double.parseDouble(17 + ""))
 		//				+ Double.parseDouble(179 + "") / Double.parseDouble(170 + "");
-		Double currentThreshold = getCurrentThreshold(myInfo.getpValueList(), time);
+//		Double currentThreshold = getCurrentThreshold(myInfo.getpValueList(), time);
+		updateCurrentThreshold(myInfo.getpValueList(),time);
 		Set<Bid> possibleBids = new HashSet<Bid>();
 		int num = 0;
 		while (num < 15000) {
@@ -121,7 +123,7 @@ public class MyNegotiationStrategy {
 		return lastBid;
 	}
 
-	public Double getCurrentThreshold(Map<Issue, List<Value>> pValueList, Double time) {
+	public void updateCurrentThreshold(Map<Issue, List<Value>> pValueList, Double time) {
 		HashMap<Integer, Value> tempBidSeed = new HashMap<Integer, Value>();
 		Bid tempBid;
 		Double maxUtility = 0d;
@@ -149,9 +151,9 @@ public class MyNegotiationStrategy {
 		averageUtility=totalUtility/pValueList.size();
 		targetUtility = (maxUtility - minUtility) * 0.75 + minUtility;
 		if ((targetUtility - 1d) * time + 1 > averageUtility) {
-			return (targetUtility - 1d) * time + 1 ;   //y=at+b
+			currentThreshold = (targetUtility - 1d) * time + 1 ;   //y=at+b
 		}
-		return averageUtility;
+		currentThreshold =  averageUtility;
 	}
 
 
