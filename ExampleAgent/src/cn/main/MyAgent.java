@@ -68,7 +68,7 @@ public class MyAgent extends AbstractNegotiationParty {
 			}
 			return new Offer(getPartyId(), bid);
 		} else {
-			Bid bid = negotiationStrategy.normalChooseBid(timeline.getTime(), oppent1Info, oppent2Info);
+			Bid bid = negotiationStrategy.normalChooseBid(timeline.getTime(), oppent1Info, oppent2Info, myInfo);
 			return new Offer(getPartyId(), bid);
 		}
 	}
