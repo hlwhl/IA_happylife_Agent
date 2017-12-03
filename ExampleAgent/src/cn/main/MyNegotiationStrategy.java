@@ -128,6 +128,8 @@ public class MyNegotiationStrategy {
 		Double minUtility = 0d;
 		Double tempUtility = 0d;
 		Double targetUtility;
+		Double totalUtility=0d;
+		Double averageUtility=0d;
 		for (int i = 0; i < pValueList.size(); i++) {
 			for (Map.Entry<Issue, List<Value>> entry : pValueList.entrySet()) {
 				for (int j = 0; j < entry.getValue().size(); j++) {
@@ -136,6 +138,7 @@ public class MyNegotiationStrategy {
 			}
 			tempBid = new Bid(utilitySpace.getDomain(), tempBidSeed);
 			tempUtility = utilitySpace.getUtility(tempBid);
+			totalUtility+=tempUtility;
 			if (tempUtility > maxUtility) {
 				maxUtility = tempUtility;
 			}
@@ -143,9 +146,14 @@ public class MyNegotiationStrategy {
 				minUtility = tempUtility;
 			}
 		}
-		targetUtility = (maxUtility - minUtility) * 0.90 + minUtility;
-		return (targetUtility - 1d) * time + 1;
+		averageUtility=totalUtility/pValueList.size();
+		targetUtility = (maxUtility - minUtility) * 0.75 + minUtility;
+		if(targetUtility>averageUtility){
+			return (targetUtility-1d)*time+1;   //y=at+b
+		}
+		return (averageUtility - 1d) * time + 1;
 	}
+
 
 	private Bid getMaxScoreBid(Set<Bid> possibleBids, OppentNegotiationInfo oppent1Info,
 			OppentNegotiationInfo oppent2Info) {
