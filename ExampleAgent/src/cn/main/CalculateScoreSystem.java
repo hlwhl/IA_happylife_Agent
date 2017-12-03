@@ -16,6 +16,26 @@ public class CalculateScoreSystem {
 	private Map<Issue, Map<Value, Double>> frequencyTen;
 	private Map<Issue, Double> weight;
 	private OppentNegotiationInfo oppentInfo;
+	private Map<Issue, Value> maxScoreBid;
+	private Double maxScore = 0d;
+	
+	public void updateMaxScoreBid(){
+		for (Map.Entry<Issue, Map<Value, Double>> issue: frequency.entrySet()) {
+			Value maxValue = null;
+			Double maxFrequency = 0d;
+			for (Map.Entry<Value, Double> value : issue.getValue().entrySet()) {
+				if (value.getValue() >= maxFrequency){
+					maxValue = value.getKey();
+					maxFrequency = value.getValue();
+				}
+			}
+			maxScoreBid.put(issue.getKey(), maxValue);
+		}
+	}
+	
+	public void updateMaxScore(){
+		maxScore = getScoreByIssueValue(maxScoreBid);
+	}
 	
 	public void updateFrequency(HashMap<Issue, List<MyValueFrequency>> opponentFrequency, int round) {
 		for (Map.Entry<Issue, List<MyValueFrequency>> frequencys: opponentFrequency.entrySet()) {
@@ -56,6 +76,7 @@ public class CalculateScoreSystem {
 		frequency = new HashMap<Issue, Map<Value, Double>>();
 		frequencyTen = new HashMap<Issue, Map<Value, Double>>();
 		weight = new HashMap<Issue, Double>();
+		maxScoreBid = new HashMap<Issue, Value>();
 	}
 
 	public Bid getMaxScoreBid(Set<Bid> bids) {
@@ -90,6 +111,22 @@ public class CalculateScoreSystem {
 		}
 		return score;
 	}
+	
+	public Double getScoreByIssueValue(Map<Issue, Value> issueValue){
+		if (issueValue == null) return 0d;
+		Double score = 0d;
+		for (Map.Entry<Issue, Map<Value, Double>> getIssue: frequencyTen.entrySet()) {
+			Issue issue = getIssue.getKey();
+			Double weight = getWeight().get(issue);
+			for (Map.Entry<Value, Double> getValue : getIssue.getValue().entrySet()) {
+				if (getValue.getKey().equals(issueValue.get(issue))){
+					score += getValue.getValue()*weight;
+				}
+			}
+		}
+		return score;
+		
+	}
 
 	public Map<Issue, Double> getWeight() {
 		return weight;
@@ -121,6 +158,22 @@ public class CalculateScoreSystem {
 
 	public void setFrequencyTen(Map<Issue, Map<Value, Double>> frequencyTen) {
 		this.frequencyTen = frequencyTen;
+	}
+
+	public Map<Issue, Value> getMaxScoreBid() {
+		return maxScoreBid;
+	}
+
+	public void setMaxScoreBid(Map<Issue, Value> maxScoreBid) {
+		this.maxScoreBid = maxScoreBid;
+	}
+
+	public Double getMaxScore() {
+		return maxScore;
+	}
+
+	public void setMaxScore(Double maxScore) {
+		this.maxScore = maxScore;
 	}
 
 

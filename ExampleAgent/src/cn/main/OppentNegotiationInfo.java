@@ -41,6 +41,8 @@ public class OppentNegotiationInfo {
 		caluOpponentsIssueVariance();
 		calculateSystem.updateFrequency(opponentFrequency, round);
 		calculateSystem.updateWeight(opponentsIssueVariance);
+		calculateSystem.updateMaxScoreBid();
+		calculateSystem.updateMaxScore();
 	}
 
 	private void initOpponentValueFrequency() {
