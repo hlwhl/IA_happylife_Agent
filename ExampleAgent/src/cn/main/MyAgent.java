@@ -19,6 +19,7 @@ public class MyAgent extends AbstractNegotiationParty {
 	private Bid myLastOffer;
 	private double thresholdUtility;
 	private Double updatePValueTime = 0.1D;
+	private Double updateNashTime = 0.1D;
 	private TimeLineInfo timeLineInfo;
 	private MyNegotiationStrategy negotiationStrategy;
 	private MyNegotiationInfo myInfo;
@@ -100,6 +101,10 @@ public class MyAgent extends AbstractNegotiationParty {
 					myInfo.optionPValueList(oppentInfo);
 					updatePValueTime += 0.1D;
 					MyPrint.printOpponentFrequency(oppentInfo.getOpponentFrequency());
+				}
+				if (time > updateNashTime) {
+					negotiationStrategy.updateNash(oppent1Info, oppent2Info);
+					updateNashTime += 0.1D;
 				}
 				System.out.println();
 			} else if (action instanceof Accept) {

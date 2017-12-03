@@ -105,4 +105,14 @@ public class MyPrint {
 		}
 	}
 
+	//打印得分最高的对方Bid
+	public static void printMaxScore(AgentID agentID, Map<Issue, Value> maxScoreBid, Double maxScore) {
+		System.out.println(agentID + "的分最高Bid");
+		for (Map.Entry<Issue, Value> score : maxScoreBid.entrySet()) {
+			System.out.print(score.getKey() + " " + score.getValue() + " ");
+		}
+		System.out.println("score : " + maxScore);
+		
+	}
+
 }

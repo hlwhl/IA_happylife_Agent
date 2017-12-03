@@ -35,6 +35,7 @@ public class CalculateScoreSystem {
 	
 	public void updateMaxScore(){
 		maxScore = getScoreByIssueValue(maxScoreBid);
+//		MyPrint.printMaxScore(oppentInfo.getOppentID(), maxScoreBid, maxScore);
 	}
 	
 	public void updateFrequency(HashMap<Issue, List<MyValueFrequency>> opponentFrequency, int round) {
@@ -67,7 +68,7 @@ public class CalculateScoreSystem {
 		for (Map.Entry<Issue, Double> issue : opponentsIssueVariance.entrySet()) {
 			weight.put(issue.getKey(), issue.getValue()/totalWeight);
 		}
-		MyPrint.printIssueWeight(oppentInfo.getOppentID(), weight);
+//		MyPrint.printIssueWeight(oppentInfo.getOppentID(), weight);
 		
 	}
 	
@@ -89,7 +90,7 @@ public class CalculateScoreSystem {
 				maxBid = bid;
 				maxScore = scoreByBid;
 			}
-			System.out.println(bid + " score : " + scoreByBid);
+//			System.out.println(bid + " score : " + scoreByBid);
 			
 		}
 		return maxBid;
@@ -125,9 +126,17 @@ public class CalculateScoreSystem {
 			}
 		}
 		return score;
-		
 	}
 
+	// 计算utility
+	public Double calculateUtility(Bid possibleBestBid) {
+		if(possibleBestBid == null) return 0d;
+		Double scoreByBid = getScoreByBid(possibleBestBid);
+		Double utility = scoreByBid/maxScore;
+		return utility;
+	}
+
+	
 	public Map<Issue, Double> getWeight() {
 		return weight;
 	}

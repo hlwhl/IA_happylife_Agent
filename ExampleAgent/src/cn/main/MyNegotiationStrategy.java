@@ -22,11 +22,13 @@ public class MyNegotiationStrategy {
 	private Double lastSuccessFindBidTime = 0.15;
 	private Double lastSuccessFindBidThreshold = 1d;
 	private Double currentThreshold = 1d;
+	private Bid nashBid;
 
 	public MyNegotiationStrategy(AbstractUtilitySpace utilitySpace) {
 		this.utilitySpace = utilitySpace;
 		try {
 			lastBid = utilitySpace.getMaxUtilityBid();
+			nashBid = new Bid(utilitySpace.getDomain());
 		} catch (Exception e) {
 			System.out.println("初始化策略对象得到最大值utility失败");
 			e.printStackTrace();
@@ -100,6 +102,7 @@ public class MyNegotiationStrategy {
 		//		Double currentThreshold = time * -(Double.parseDouble(6 + "") / Double.parseDouble(17 + ""))
 		//				+ Double.parseDouble(179 + "") / Double.parseDouble(170 + "");
 //		Double currentThreshold = getCurrentThreshold(myInfo.getpValueList(), time);
+		
 		updateCurrentThreshold(myInfo.getpValueList(),time);
 		Set<Bid> possibleBids = new HashSet<Bid>();
 		int num = 0;
@@ -121,6 +124,8 @@ public class MyNegotiationStrategy {
 			return maxScoreBid;
 		}
 		return lastBid;
+//		if (time < 0.7d) return lastBid;
+//		return nashBid;
 	}
 
 	public void updateCurrentThreshold(Map<Issue, List<Value>> pValueList, Double time) {
@@ -149,11 +154,12 @@ public class MyNegotiationStrategy {
 			}
 		}
 		averageUtility=totalUtility/pValueList.size();
-		targetUtility = (maxUtility - minUtility) * 0.75 + minUtility;
+		/*targetUtility = (maxUtility - minUtility) * 0.75 + minUtility;
 		if ((targetUtility - 1d) * time + 1 > averageUtility) {
 			currentThreshold = (targetUtility - 1d) * time + 1 ;   //y=at+b
-		}
-		currentThreshold =  averageUtility;
+		}*/
+        currentThreshold =  (averageUtility-1d)*time+1d;
+        System.out.println("avg: "+averageUtility+"current: "+currentThreshold);
 	}
 
 
@@ -211,6 +217,59 @@ public class MyNegotiationStrategy {
 		return (Value) currentValue;
 	}
 
+
+	public void updateNash(OppentNegotiationInfo oppent1Info, OppentNegotiationInfo oppent2Info) {
+		if (oppent1Info == null && oppent2Info == null) return;
+		Double currentThresholdMax = 1d;
+		Double currentThresholdMin = 1d;
+		Set<Bid> possibleBestBids = new HashSet<Bid>();
+		if (oppent1Info != null){
+			Set<Bid> possibleBids = new HashSet<Bid>();
+			while(currentThresholdMin > 0.02d){
+				int num = 0;
+				while (num < 15000) {
+					Bid bid = generateRandomBid();
+					Double utility = utilitySpace.getUtility(bid);
+					if (utility >= currentThresholdMin && currentThresholdMax <= 1d) possibleBids.add(bid);
+					num++;
+				}
+				if (possibleBids.size() < 5){
+					currentThresholdMin -= 0.02d;
+					continue;
+				} else{
+					currentThresholdMax -= 0.02d;
+					currentThresholdMin -= 0.02d;
+					Bid maxScoreBid = oppent1Info.getCalculateSystem().getMaxScoreBid(possibleBids);
+					possibleBestBids.add(maxScoreBid);
+				}
+			}
+			nashBid = calculateNash(possibleBestBids, oppent1Info, oppent2Info);
+			
+		}
+		
+		
+	}
+
+	private Bid calculateNash(Set<Bid> possibleBestBids, OppentNegotiationInfo oppent1Info,
+			OppentNegotiationInfo oppent2Info) {
+		if (possibleBestBids == null) return lastBid;
+		if (oppent1Info == null && oppent2Info == null) return lastBid;
+		Bid nash = lastBid;
+		Double maxMultiUtility = 0d;
+		if (oppent1Info != null){
+			for (Bid possibleBestBid : possibleBestBids) {
+				Double oppentUtility = oppent1Info.getCalculateSystem().calculateUtility(possibleBestBid);
+				Double myUtility = utilitySpace.getUtility(possibleBestBid);
+				Double multiUtility = oppentUtility * myUtility;
+				if (multiUtility >= maxMultiUtility){
+					nash = possibleBestBid;
+					maxMultiUtility = multiUtility;
+				}
+			}
+		}
+		return nash;
+	}
+
 	public AbstractUtilitySpace getUtilitySpace() {
 		return utilitySpace;
 	}
@@ -234,5 +293,30 @@ public class MyNegotiationStrategy {
 	public void setLastSuccessFindBidTime(Double lastSuccessFindBidTime) {
 		this.lastSuccessFindBidTime = lastSuccessFindBidTime;
 	}
+
+	public Double getLastSuccessFindBidThreshold() {
+		return lastSuccessFindBidThreshold;
+	}
+
+	public void setLastSuccessFindBidThreshold(Double lastSuccessFindBidThreshold) {
+		this.lastSuccessFindBidThreshold = lastSuccessFindBidThreshold;
+	}
+
+	public Double getCurrentThreshold() {
+		return currentThreshold;
+	}
+
+	public void setCurrentThreshold(Double currentThreshold) {
+		this.currentThreshold = currentThreshold;
+	}
+
+	public Bid getNashBid() {
+		return nashBid;
+	}
+
+	public void setNashBid(Bid nashBid) {
+		this.nashBid = nashBid;
+	}
+
 
 }
