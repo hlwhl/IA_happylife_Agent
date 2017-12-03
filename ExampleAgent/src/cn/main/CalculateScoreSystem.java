@@ -81,7 +81,7 @@ public class CalculateScoreSystem {
 	}
 
 	public Bid getMaxScoreBid(Set<Bid> bids) {
-		MyPrint.printScoreDetail(oppentInfo.getOppentID(), frequencyTen, weight);
+//		MyPrint.printScoreDetail(oppentInfo.getOppentID(), frequencyTen, weight);
 		Bid maxBid = null;
 		Double maxScore = 0d;
 		for (Bid bid : bids) {

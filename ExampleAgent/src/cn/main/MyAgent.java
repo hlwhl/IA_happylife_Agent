@@ -106,7 +106,6 @@ public class MyAgent extends AbstractNegotiationParty {
 					negotiationStrategy.updateNash(oppent1Info, oppent2Info);
 					updateNashTime += 0.1D;
 				}
-				System.out.println();
 			} else if (action instanceof Accept) {
 				// TODO
 			}

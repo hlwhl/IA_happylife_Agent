@@ -144,10 +144,11 @@ public class OppentNegotiationInfo {
 					}
 				}
 			}
+			if (totalDiffentTimes == 0) totalDiffentTimes = 1;
 			Double variance = 1.0-(Double.valueOf(diffirentTimes) / Double.valueOf(totalDiffentTimes));
 			opponentsIssueVariance.put(utilitySpace.getDomain().getIssues().get(i), variance);
 		}
-		MyPrint.printIssueVariance(OppentID, opponentsIssueVariance);
+//		MyPrint.printIssueVariance(OppentID, opponentsIssueVariance);
 	}
 	
 	public AbstractUtilitySpace getUtilitySpace() {

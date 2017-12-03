@@ -252,21 +252,26 @@ public class MyNegotiationStrategy {
 
 	private Bid calculateNash(Set<Bid> possibleBestBids, OppentNegotiationInfo oppent1Info,
 			OppentNegotiationInfo oppent2Info) {
-		if (possibleBestBids == null) return lastBid;
+		if (possibleBestBids == null || possibleBestBids.size() == 0) return lastBid;
 		if (oppent1Info == null && oppent2Info == null) return lastBid;
 		Bid nash = lastBid;
 		Double maxMultiUtility = 0d;
 		if (oppent1Info != null){
 			for (Bid possibleBestBid : possibleBestBids) {
-				Double oppentUtility = oppent1Info.getCalculateSystem().calculateUtility(possibleBestBid);
+				Double oppent1Utility = oppent1Info.getCalculateSystem().calculateUtility(possibleBestBid);
 				Double myUtility = utilitySpace.getUtility(possibleBestBid);
-				Double multiUtility = oppentUtility * myUtility;
+				Double multiUtility = oppent1Utility * myUtility;
+				if (oppent2Info != null){
+					Double oppent2Utility = oppent2Info.getCalculateSystem().calculateUtility(possibleBestBid);
+					multiUtility *= oppent2Utility;
+				}
 				if (multiUtility >= maxMultiUtility){
 					nash = possibleBestBid;
 					maxMultiUtility = multiUtility;
 				}
 			}
 		}
+		System.out.println("nash" + nash + "utility" + utilitySpace.getUtility(nash));
 		return nash;
 	}
 
