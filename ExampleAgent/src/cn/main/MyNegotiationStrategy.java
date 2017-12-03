@@ -149,11 +149,12 @@ public class MyNegotiationStrategy {
 			}
 		}
 		averageUtility=totalUtility/pValueList.size();
-		targetUtility = (maxUtility - minUtility) * 0.75 + minUtility;
+		/*targetUtility = (maxUtility - minUtility) * 0.75 + minUtility;
 		if ((targetUtility - 1d) * time + 1 > averageUtility) {
 			currentThreshold = (targetUtility - 1d) * time + 1 ;   //y=at+b
-		}
-		currentThreshold =  averageUtility;
+		}*/
+		currentThreshold =  (averageUtility-1d)*time+1d;
+		System.out.println("avg: "+averageUtility+"current: "+currentThreshold);
 	}
 
 
