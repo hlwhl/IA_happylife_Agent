@@ -157,7 +157,7 @@ public class MyNegotiationStrategy {
 		for (Bid bid : possibleBids) {
 			Double scoreByBid = 0d;
 			if (oppent1cal != null) scoreByBid += oppent1cal.getScoreByBid(bid);
-			if (oppent2cal != null) scoreByBid += oppent2cal.getScoreByBid(bid);
+			if (oppent2cal != null) scoreByBid *= oppent2cal.getScoreByBid(bid);
 			if (scoreByBid >= maxScore) {
 				maxBid = bid;
 				maxScore = scoreByBid;
@@ -208,6 +208,7 @@ public class MyNegotiationStrategy {
 		Set<Bid> possibleBestBids = new HashSet<Bid>();
 		if (oppent1Info != null){
 			Set<Bid> possibleBids = new HashSet<Bid>();
+//			Set<Bid> pBids = new HashSet<Bid>();
 			while(currentThresholdMin > 0.02d){
 				int num = 0;
 				while (num < 15000) {
@@ -228,30 +229,7 @@ public class MyNegotiationStrategy {
 						maxScoreBid = oppent2Info.getCalculateSystem().getMaxScoreBid(possibleBids);
 						possibleBestBids.add(maxScoreBid);
 					}
-				}
-			}
-			nashBid = calculateNash(possibleBestBids, oppent1Info, oppent2Info);
-		}
-
-
-		if (oppent1Info != null && oppent2Info==null){
-			Set<Bid> possibleBids = new HashSet<Bid>();
-			while(currentThresholdMin > 0.02d){
-				int num = 0;
-				while (num < 15000) {
-					Bid bid = generateRandomBid();
-					Double utility = utilitySpace.getUtility(bid);
-					if (utility >= currentThresholdMin && currentThresholdMax <= 1d) possibleBids.add(bid);
-					num++;
-				}
-				if (possibleBids.size() < 5){
-					currentThresholdMin -= 0.02d;
-					continue;
-				} else{
-					currentThresholdMax -= 0.02d;
-					currentThresholdMin -= 0.02d;
-					Bid maxScoreBid = oppent1Info.getCalculateSystem().getMaxScoreBid(possibleBids);
-					possibleBestBids.add(maxScoreBid);
+//					pBids.addAll(possibleBids);
 				}
 			}
 			nashBid = calculateNash(possibleBestBids, oppent1Info, oppent2Info);

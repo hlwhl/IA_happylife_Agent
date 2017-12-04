@@ -66,7 +66,7 @@ public class MyNegotiationInfo {
 			prefectOrder.put(di, values);
 			
 		}
-//		MyPrint.printPreferenceInfo(scoreCondition);
+		MyPrint.printPreferenceInfo(scoreCondition);
 	}
 
 	private void sort(List<MyValueEvaluation> frequencys) {

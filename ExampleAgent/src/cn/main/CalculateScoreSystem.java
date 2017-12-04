@@ -1,5 +1,6 @@
 package cn.main;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -101,11 +102,28 @@ public class CalculateScoreSystem {
 		Double score = 0d;
 		List<Issue> issues = bid.getIssues();
 		int N = issues.size();
+//		System.out.println(oppentInfo.getOppentID() + "中详细得分");
 		for (int i = 0; i < N; i++) {
+//			System.out.println("issue : " + issues.get(i));
 			Double weight = getWeight().get(issues.get(i));
 			Map<Value, Double> valueFens = getFrequencyTen().get(issues.get(i));
 			for (Map.Entry<Value, Double> valueFen : valueFens.entrySet()) {
 				if (valueFen.getKey().equals(bid.getValue(i + 1))){
+//					score += valueFen.getValue()*weight;
+					
+//					BigDecimal b = new BigDecimal(valueFen.getValue());  
+//					double valueD = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+//					BigDecimal bb;
+//					if (weight.equals(Double.NaN)) {
+//						bb = new BigDecimal(0);
+//					} else {
+//						bb = new BigDecimal(weight);
+//					}
+//					double valueDD = bb.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+//					BigDecimal bbb = new BigDecimal(valueD*valueDD);  
+//					double valueDDD = bbb.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+//					String detail = valueD + " x " + valueDD + " = " + valueDDD;
+//					System.out.println(detail);
 					score += valueFen.getValue()*weight;
 				}
 			}
