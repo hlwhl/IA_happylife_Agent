@@ -55,7 +55,7 @@ import negotiator.timeline.TimeLineInfo;
 
 	private Action OfferAction() {
 
-		if (timeline.getTime() < 0.15) {
+		if (timeline.getTime() < 0.5) {
 			Bid bid = null;
 			try {
 				bid = utilitySpace.getMaxUtilityBid();
