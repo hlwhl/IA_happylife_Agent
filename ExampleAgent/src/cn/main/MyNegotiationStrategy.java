@@ -107,14 +107,16 @@ public class MyNegotiationStrategy {
 				"------------------lastSuccessFindBidThreshold-------------------" + lastSuccessFindBidThreshold);
 		if (possibleBids.size() < 5) return lastBid;
 		Bid maxScoreBid = getMaxScoreBid(possibleBids, oppent1Info, oppent2Info);
-		// lastSuccessFindBidThreshold = currentThreshold;
-		if (maxScoreBid != null) {
-			lastBid = maxScoreBid;
-			return maxScoreBid;
-		}
-		return lastBid;
+//		// lastSuccessFindBidThreshold = currentThreshold;
+
+//		if (maxScoreBid != null) {
+//			lastBid = maxScoreBid;
+//			return maxScoreBid;
+//		}
+//		return lastBid;
 //		if (time < 0.7d) return lastBid;
-//		return nashBid;
+		if(time<0.9) return lastBid;
+		return nashBid;
 	}
 
 	public void updateCurrentThreshold(Map<Issue, List<Value>> pValueList, Double time) {
@@ -161,7 +163,13 @@ public class MyNegotiationStrategy {
 				maxScore = scoreByBid;
 			}
 			//			System.out.println(bid + " score : " + scoreByBid);
-
+//			if (oppent1cal != null && oppent2cal != null) {
+//				scoreByBid += oppent1cal.getScoreByBid(bid) * oppent2cal.getScoreByBid(bid);
+//			}
+//			if (scoreByBid >= maxScore) {
+//				maxBid = bid;
+//				maxScore = scoreByBid;
+//			}
 		}
 		return maxBid;
 	}
@@ -216,10 +224,39 @@ public class MyNegotiationStrategy {
 					currentThresholdMin -= 0.02d;
 					Bid maxScoreBid = oppent1Info.getCalculateSystem().getMaxScoreBid(possibleBids);
 					possibleBestBids.add(maxScoreBid);
+					if (oppent2Info != null) {
+						maxScoreBid = oppent2Info.getCalculateSystem().getMaxScoreBid(possibleBids);
+						possibleBestBids.add(maxScoreBid);
+					}
 				}
 			}
 			nashBid = calculateNash(possibleBestBids, oppent1Info, oppent2Info);
 		}
+
+
+		if (oppent1Info != null && oppent2Info==null){
+			Set<Bid> possibleBids = new HashSet<Bid>();
+			while(currentThresholdMin > 0.02d){
+				int num = 0;
+				while (num < 15000) {
+					Bid bid = generateRandomBid();
+					Double utility = utilitySpace.getUtility(bid);
+					if (utility >= currentThresholdMin && currentThresholdMax <= 1d) possibleBids.add(bid);
+					num++;
+				}
+				if (possibleBids.size() < 5){
+					currentThresholdMin -= 0.02d;
+					continue;
+				} else{
+					currentThresholdMax -= 0.02d;
+					currentThresholdMin -= 0.02d;
+					Bid maxScoreBid = oppent1Info.getCalculateSystem().getMaxScoreBid(possibleBids);
+					possibleBestBids.add(maxScoreBid);
+				}
+			}
+			nashBid = calculateNash(possibleBestBids, oppent1Info, oppent2Info);
+		}
+
 	}
 
 	private Bid calculateNash(Set<Bid> possibleBestBids, OppentNegotiationInfo oppent1Info,

@@ -11,8 +11,7 @@ import negotiator.parties.AbstractNegotiationParty;
 import negotiator.parties.NegotiationInfo;
 import negotiator.timeline.TimeLineInfo;
 
-@SuppressWarnings("serial")
-public class MyAgent extends AbstractNegotiationParty {
+@SuppressWarnings("serial") public class MyAgent extends AbstractNegotiationParty {
 
 	private Bid lastReceivedOffer;
 	private Bid myLastOffer;
@@ -26,8 +25,7 @@ public class MyAgent extends AbstractNegotiationParty {
 	private OppentNegotiationInfo oppent2Info;
 	private int round = 0;
 
-	@Override
-	public void init(NegotiationInfo info) {
+	@Override public void init(NegotiationInfo info) {
 		super.init(info);
 		thresholdUtility = 1.0;
 		this.timeLineInfo = info.getTimeline();
@@ -41,8 +39,7 @@ public class MyAgent extends AbstractNegotiationParty {
 		}
 	}
 
-	@Override
-	public Action chooseAction(List<Class<? extends Action>> validActions) {
+	@Override public Action chooseAction(List<Class<? extends Action>> validActions) {
 		round++;
 		double time = timeLineInfo.getTime();
 		if (validActions.contains(Accept.class) && negotiationStrategy.selectAccept(lastReceivedOffer, time))
@@ -72,8 +69,7 @@ public class MyAgent extends AbstractNegotiationParty {
 		}
 	}
 
-	@Override
-	public void receiveMessage(AgentID sender, Action action) {
+	@Override public void receiveMessage(AgentID sender, Action action) {
 		super.receiveMessage(sender, action);
 		if (action != null) {
 			if (action instanceof Offer) {
@@ -84,14 +80,14 @@ public class MyAgent extends AbstractNegotiationParty {
 				} else if (oppent2Info == null && !oppent1Info.getOppentID().equals(sender)) {
 					oppent2Info = new OppentNegotiationInfo(utilitySpace, sender);
 				}
-				
+
 				OppentNegotiationInfo oppentInfo = null;
 				if (oppent1Info.getOppentID().equals(sender)) {
 					oppentInfo = oppent1Info;
 				} else if (oppent2Info.getOppentID().equals(sender)) {
 					oppentInfo = oppent2Info;
 				}
-				
+
 				Offer offer = (Offer) action;
 				oppentInfo.optionOppentInfo(offer.getBid(), round);
 				double time = timeLineInfo.getTime();
@@ -105,23 +101,34 @@ public class MyAgent extends AbstractNegotiationParty {
 					updateNashTime += 0.1D;
 				}
 			} else if (action instanceof Accept) {
-				// TODO
+				OppentNegotiationInfo oppentInfo = null;
+				if (sender.equals(oppent1Info.getOppentID())) {
+					oppentInfo = oppent1Info;
+				} else if (oppent2Info != null) {
+					if (sender.equals(oppent2Info.getOppentID())) {
+						oppentInfo = oppent2Info;
+					}
+					oppentInfo.optionOppentInfo(lastReceivedOffer, round);
+					if (timeLineInfo.getTime() > updateNashTime) {
+						negotiationStrategy.updateNash(oppent1Info, oppent2Info);
+						updateNashTime += 0.1D;
+					}
+				}
 			}
 		}
 		// 输出信息
-//		if (timeline.getTime() > 1) {
-//			// 生成猜测到的对方最大utility的Bid
-//			Bid max1Bid = oppent1Info.getMaxFrequencyBid();
-//			System.out.println(max1Bid.toString());
-//			System.out.println("对手1最大bid在我们agent的utility" + utilitySpace.getUtility(max1Bid));
-//			Bid max2Bid = oppent2Info.getMaxFrequencyBid();
-//			System.out.println(max2Bid.toString());
-//			System.out.println("对手2最大bid在我们agentutility" + utilitySpace.getUtility(max2Bid));
-//		}
+		//		if (timeline.getTime() > 1) {
+		//			// 生成猜测到的对方最大utility的Bid
+		//			Bid max1Bid = oppent1Info.getMaxFrequencyBid();
+		//			System.out.println(max1Bid.toString());
+		//			System.out.println("对手1最大bid在我们agent的utility" + utilitySpace.getUtility(max1Bid));
+		//			Bid max2Bid = oppent2Info.getMaxFrequencyBid();
+		//			System.out.println(max2Bid.toString());
+		//			System.out.println("对手2最大bid在我们agentutility" + utilitySpace.getUtility(max2Bid));
+		//		}
 	}
 
-	@Override
-	public String getDescription() {
+	@Override public String getDescription() {
 		return "Group6";
 	}
 
