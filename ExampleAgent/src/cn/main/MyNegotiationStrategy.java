@@ -33,7 +33,6 @@ public class MyNegotiationStrategy {
 			System.out.println("初始化策略对象得到最大值utility失败");
 			e.printStackTrace();
 		}
-
 	}
 
 	public boolean selectAccept(Bid lastReceivedOffer, double time) {
@@ -72,16 +71,6 @@ public class MyNegotiationStrategy {
 		return u > currentThreshold;
 	}
 
-	public boolean selectEndNegotiation(double time) {
-
-		return false;
-	}
-
-	public Action OfferAction() {
-
-		return null;
-	}
-
 	public Bid getRandomFromPValueList(Map<Issue, List<Value>> pvl) {
 		// 从myInfo.pValueList随机组合bid
 		Bid bid = null;
@@ -93,7 +82,7 @@ public class MyNegotiationStrategy {
 					new ValueDiscrete(issueValues.getValue().get(r.nextInt(issueValues.getValue().size())).toString()));
 			bid = new Bid(utilitySpace.getDomain(), bidP);
 		}
-		System.out.println("生成" + bid);
+//		System.out.println("生成" + bid);
 		return bid;
 	}
 
@@ -131,10 +120,7 @@ public class MyNegotiationStrategy {
 	public void updateCurrentThreshold(Map<Issue, List<Value>> pValueList, Double time) {
 		HashMap<Integer, Value> tempBidSeed = new HashMap<Integer, Value>();
 		Bid tempBid;
-		Double maxUtility = 0d;
-		Double minUtility = 0d;
 		Double tempUtility = 0d;
-		Double targetUtility;
 		Double totalUtility=0d;
 		Double averageUtility=0d;
 		for (int i = 0; i < pValueList.size(); i++) {
@@ -146,22 +132,11 @@ public class MyNegotiationStrategy {
 			tempBid = new Bid(utilitySpace.getDomain(), tempBidSeed);
 			tempUtility = utilitySpace.getUtility(tempBid);
 			totalUtility+=tempUtility;
-			if (tempUtility > maxUtility) {
-				maxUtility = tempUtility;
-			}
-			if (tempUtility < minUtility) {
-				minUtility = tempUtility;
-			}
 		}
 		averageUtility=totalUtility/pValueList.size();
-		/*targetUtility = (maxUtility - minUtility) * 0.75 + minUtility;
-		if ((targetUtility - 1d) * time + 1 > averageUtility) {
-			currentThreshold = (targetUtility - 1d) * time + 1 ;   //y=at+b
-		}*/
         currentThreshold =  (averageUtility-1d)*time+1d;
         System.out.println("avg: "+averageUtility+"current: "+currentThreshold);
 	}
-
 
 	private Bid getMaxScoreBid(Set<Bid> possibleBids, OppentNegotiationInfo oppent1Info,
 			OppentNegotiationInfo oppent2Info) {
@@ -244,10 +219,7 @@ public class MyNegotiationStrategy {
 				}
 			}
 			nashBid = calculateNash(possibleBestBids, oppent1Info, oppent2Info);
-			
 		}
-		
-		
 	}
 
 	private Bid calculateNash(Set<Bid> possibleBestBids, OppentNegotiationInfo oppent1Info,
@@ -322,6 +294,4 @@ public class MyNegotiationStrategy {
 	public void setNashBid(Bid nashBid) {
 		this.nashBid = nashBid;
 	}
-
-
 }

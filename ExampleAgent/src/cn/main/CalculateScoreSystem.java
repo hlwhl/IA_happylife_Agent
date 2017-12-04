@@ -184,8 +184,4 @@ public class CalculateScoreSystem {
 	public void setMaxScore(Double maxScore) {
 		this.maxScore = maxScore;
 	}
-
-
-
-
 }

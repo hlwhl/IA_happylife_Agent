@@ -6,7 +6,6 @@ import negotiator.AgentID;
 import negotiator.Bid;
 import negotiator.actions.Accept;
 import negotiator.actions.Action;
-import negotiator.actions.EndNegotiation;
 import negotiator.actions.Offer;
 import negotiator.parties.AbstractNegotiationParty;
 import negotiator.parties.NegotiationInfo;
@@ -48,7 +47,6 @@ public class MyAgent extends AbstractNegotiationParty {
 		double time = timeLineInfo.getTime();
 		if (validActions.contains(Accept.class) && negotiationStrategy.selectAccept(lastReceivedOffer, time))
 			return new Accept(getPartyId(), lastReceivedOffer);
-		if (negotiationStrategy.selectEndNegotiation(time)) return new EndNegotiation(getPartyId());
 		else try {
 			return OfferAction();
 		} catch (Exception e) {
@@ -109,30 +107,22 @@ public class MyAgent extends AbstractNegotiationParty {
 			} else if (action instanceof Accept) {
 				// TODO
 			}
-			
-			
-			
 		}
-
 		// 输出信息
 //		if (timeline.getTime() > 1) {
-//
 //			// 生成猜测到的对方最大utility的Bid
-//			// TODO:使用最大bid计算
 //			Bid max1Bid = oppent1Info.getMaxFrequencyBid();
 //			System.out.println(max1Bid.toString());
 //			System.out.println("对手1最大bid在我们agent的utility" + utilitySpace.getUtility(max1Bid));
 //			Bid max2Bid = oppent2Info.getMaxFrequencyBid();
 //			System.out.println(max2Bid.toString());
 //			System.out.println("对手2最大bid在我们agentutility" + utilitySpace.getUtility(max2Bid));
-//
 //		}
-
 	}
 
 	@Override
 	public String getDescription() {
-		return "My agent";
+		return "Group6";
 	}
 
 	public Bid getLastReceivedOffer() {
@@ -214,6 +204,4 @@ public class MyAgent extends AbstractNegotiationParty {
 	public void setRound(int round) {
 		this.round = round;
 	}
-	
-	
 }
