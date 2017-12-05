@@ -369,6 +369,9 @@
             <partyRepItem classPath="bin/cn/main/MyAgent.class">
                 <properties/>
             </partyRepItem>
+            <partyRepItem classPath="bin/group6/Agent6.class">
+                <properties/>
+            </partyRepItem>
         </partyRepItems>
         <domainRepItem/>
         <protocolRepItem/>

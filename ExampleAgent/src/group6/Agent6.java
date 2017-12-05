@@ -114,7 +114,7 @@ public class Agent6 extends AbstractNegotiationParty {
 
 	@Override
 	public String getDescription() {
-		return "My agent";
+		return "group6 agent";
 	}
 
 	public Bid getLastReceivedOffer() {

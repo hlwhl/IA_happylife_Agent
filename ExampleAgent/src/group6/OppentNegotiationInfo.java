@@ -28,13 +28,14 @@ public class OppentNegotiationInfo {
 		return diffentTimesSummary;
 	}
 
-	public void setLastBid(Bid b){
-		lastBid=b;
+	public void setLastBid(Bid b) {
+		lastBid = b;
 	}
 
-	public void updateDiffentTimesSummary(Bid b){
-		if(b==null) return;;
-		if(b.equals(lastBid)){
+	public void updateDiffentTimesSummary(Bid b) {
+		if (b == null) return;
+		;
+		if (b.equals(lastBid)) {
 			diffentTimesSummary++;
 		}
 	}
@@ -78,14 +79,12 @@ public class OppentNegotiationInfo {
 		}
 	}
 
-
 	public Bid getMaxFrequencyBid() {
 		HashMap<Integer, Value> bidP = new HashMap<Integer, Value>();
 		for (Map.Entry<Issue, List<MyValueFrequency>> oppoInfo : opponentFrequency.entrySet()) {
 			// 输出信息
-			System.out.println(
-					"频次最高" + oppoInfo.getValue().get(0).getValue().toString() + "为" + oppoInfo.getValue().get(0)
-							.getFrequency());
+			System.out.println("频次最高" + oppoInfo.getValue().get(0).getValue().toString() + "为"
+					+ oppoInfo.getValue().get(0).getFrequency());
 			// bid生成
 			bidP.put(oppoInfo.getKey().getNumber(),
 					new ValueDiscrete(oppoInfo.getValue().get(0).getValue().toString()));
@@ -114,12 +113,8 @@ public class OppentNegotiationInfo {
 			public int compare(MyValueFrequency o1, MyValueFrequency o2) {
 
 				// 降序排列
-				if (o1.getFrequency() < o2.getFrequency()) {
-					return 1;
-				}
-				if (o1.getFrequency() == o2.getFrequency()) {
-					return 0;
-				}
+				if (o1.getFrequency() < o2.getFrequency()) { return 1; }
+				if (o1.getFrequency() == o2.getFrequency()) { return 0; }
 				return -1;
 			}
 		});
@@ -135,9 +130,7 @@ public class OppentNegotiationInfo {
 		return values;
 	}
 
-
-
-	//计算对手Issue间的方差
+	// 计算对手Issue间的方差
 	public void caluOpponentsIssueVariance() {
 		int totalDiffentTimes = 0;
 		for (int i = 0; i < utilitySpace.getDomain().getIssues().size(); i++) {
@@ -145,8 +138,8 @@ public class OppentNegotiationInfo {
 			String compare;
 			for (int j = 0; j < opponentsBidHistory.size(); j++) {
 				if (j > 0) {
-					compare = opponentsBidHistory.get(j - 1).getValue(i+1).toString();
-					if (!compare.equals(opponentsBidHistory.get(j).getValue(i+1).toString())) {
+					compare = opponentsBidHistory.get(j - 1).getValue(i + 1).toString();
+					if (!compare.equals(opponentsBidHistory.get(j).getValue(i + 1).toString())) {
 						diffirentTimes++;
 					}
 				}
@@ -159,14 +152,14 @@ public class OppentNegotiationInfo {
 			String compare;
 			for (int j = 0; j < opponentsBidHistory.size(); j++) {
 				if (j > 0) {
-					compare = opponentsBidHistory.get(j - 1).getValue(i+1).toString();
-					if (!compare.equals(opponentsBidHistory.get(j).getValue(i+1).toString())) {
+					compare = opponentsBidHistory.get(j - 1).getValue(i + 1).toString();
+					if (!compare.equals(opponentsBidHistory.get(j).getValue(i + 1).toString())) {
 						diffirentTimes++;
 					}
 				}
 			}
 			if (totalDiffentTimes == 0) totalDiffentTimes = 1;
-			Double variance = 1.0-(Double.valueOf(diffirentTimes) / Double.valueOf(totalDiffentTimes));
+			Double variance = 1.0 - (Double.valueOf(diffirentTimes) / Double.valueOf(totalDiffentTimes));
 			opponentsIssueVariance.put(utilitySpace.getDomain().getIssues().get(i), variance);
 		}
 	}
@@ -250,6 +243,5 @@ public class OppentNegotiationInfo {
 	public void setOppentID(AgentID oppentID) {
 		OppentID = oppentID;
 	}
-
 
 }

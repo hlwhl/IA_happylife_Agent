@@ -13,7 +13,7 @@ import java.util.Map;
 public class MyPrint {
 
 	public static void printPValueList(Map<Issue, List<Value>> pValueList) {
-		for (Map.Entry<Issue, List<Value>> issueValues: pValueList.entrySet()) {
+		for (Map.Entry<Issue, List<Value>> issueValues : pValueList.entrySet()) {
 			System.out.println("issue : " + issueValues.getKey().getName());
 			for (Value value : issueValues.getValue()) {
 				System.out.println(" value : " + value.toString());
@@ -32,7 +32,7 @@ public class MyPrint {
 			}
 		}
 		System.out.println(" ");
-		
+
 	}
 
 	public static void printOpponentFrequency(HashMap<Issue, List<MyValueFrequency>> opponentFrequency) {
@@ -48,8 +48,9 @@ public class MyPrint {
 	}
 
 	public static void printThreshold(Double minThreshold, Double maxThreshold, Double averageThreshold) {
-		System.out.println("minThreshold : " + minThreshold + "; maxThreshold : " + maxThreshold + "; averageThreshold : " + averageThreshold);
-		
+		System.out.println("minThreshold : " + minThreshold + "; maxThreshold : " + maxThreshold
+				+ "; averageThreshold : " + averageThreshold);
+
 	}
 
 	public static void printIssueWeight(AgentID OppentID, Map<Issue, Double> opponentsIssueWeight) {
@@ -66,7 +67,7 @@ public class MyPrint {
 			System.out.println(" Issue : " + issue.getKey() + "--" + issue.getValue());
 		}
 		System.out.println(" ");
-		
+
 	}
 
 	// 打印配置文件详细分数信息
@@ -80,14 +81,15 @@ public class MyPrint {
 			System.out.println("");
 		}
 	}
-	
-	//打印对方配置文件信息
-	public static void printScoreDetail(AgentID agentID, Map<Issue, Map<Value, Double>> frequencyTen, Map<Issue, Double> weight){
+
+	// 打印对方配置文件信息
+	public static void printScoreDetail(AgentID agentID, Map<Issue, Map<Value, Double>> frequencyTen,
+			Map<Issue, Double> weight) {
 		System.out.println(agentID + "配置文件详细得分");
 		for (Map.Entry<Issue, Map<Value, Double>> frequency : frequencyTen.entrySet()) {
 			System.out.println("issue: " + frequency.getKey());
 			for (Map.Entry<Value, Double> value : frequency.getValue().entrySet()) {
-				BigDecimal b = new BigDecimal(value.getValue());  
+				BigDecimal b = new BigDecimal(value.getValue());
 				double valueD = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 				BigDecimal bb;
 				if (weight.get(frequency.getKey()).equals(Double.NaN)) {
@@ -96,7 +98,7 @@ public class MyPrint {
 					bb = new BigDecimal(weight.get(frequency.getKey()));
 				}
 				double valueDD = bb.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-				BigDecimal bbb = new BigDecimal(valueD*valueDD);  
+				BigDecimal bbb = new BigDecimal(valueD * valueDD);
 				double valueDDD = bbb.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 				String detail = valueD + " x " + valueDD + " = " + valueDDD;
 				System.out.println(value.getKey() + " " + detail + " ");
@@ -105,14 +107,14 @@ public class MyPrint {
 		}
 	}
 
-	//打印得分最高的对方Bid
+	// 打印得分最高的对方Bid
 	public static void printMaxScore(AgentID agentID, Map<Issue, Value> maxScoreBid, Double maxScore) {
 		System.out.println(agentID + "的分最高Bid");
 		for (Map.Entry<Issue, Value> score : maxScoreBid.entrySet()) {
 			System.out.print(score.getKey() + " " + score.getValue() + " ");
 		}
 		System.out.println("score : " + maxScore);
-		
+
 	}
 
 }

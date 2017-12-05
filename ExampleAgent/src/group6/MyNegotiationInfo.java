@@ -29,7 +29,9 @@ public class MyNegotiationInfo {
 		initPrefectOrder();
 		MyPrint.printPrefectOrder(prefectOrder);
 	}
-	private Map<Issue, Map<Value, String>> scoreCondition = new HashMap<Issue, Map<Value, String>>(); 
+
+	private Map<Issue, Map<Value, String>> scoreCondition = new HashMap<Issue, Map<Value, String>>();
+
 	private void initPrefectOrder() throws Exception {
 		prefectOrder = new HashMap<Issue, List<MyValueEvaluation>>();
 		int N = issues.size();
@@ -38,30 +40,29 @@ public class MyNegotiationInfo {
 			EvaluatorDiscrete de = (EvaluatorDiscrete) ((AdditiveUtilitySpace) utilitySpace).getEvaluator(i + 1);
 			int M = di.getNumberOfValues();
 			List<MyValueEvaluation> values = new ArrayList<MyValueEvaluation>();
-			
-			//打印配置文件信息
+
+			// 打印配置文件信息
 			Map<Value, String> valueInfo = new HashMap<Value, String>();
 			for (int j = 0; j < M; j++) {
 				MyValueEvaluation value = new MyValueEvaluation();
 				value.setEvaluation(de.getEvaluation(di.getValue(j)).doubleValue());
 				value.setValue(di.getValue(j));
 				values.add(value);
-				
-				
-				BigDecimal b = new BigDecimal(de.getEvaluation(di.getValue(j)).doubleValue());  
+
+				BigDecimal b = new BigDecimal(de.getEvaluation(di.getValue(j)).doubleValue());
 				double valueD = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-				BigDecimal bb = new BigDecimal(de.getWeight());  
+				BigDecimal bb = new BigDecimal(de.getWeight());
 				double valueDD = bb.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-				BigDecimal bbb = new BigDecimal(valueD*valueDD);  
+				BigDecimal bbb = new BigDecimal(valueD * valueDD);
 				double valueDDD = bbb.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 				valueInfo.put(di.getValue(j), valueD + " x " + valueDD + " = " + valueDDD);
 			}
 			scoreCondition.put(di, valueInfo);
 			sort(values);
 			prefectOrder.put(di, values);
-			
+
 		}
-//		MyPrint.printPreferenceInfo(scoreCondition);
+		// MyPrint.printPreferenceInfo(scoreCondition);
 	}
 
 	private void sort(List<MyValueEvaluation> frequencys) {
@@ -87,12 +88,10 @@ public class MyNegotiationInfo {
 		for (int i = 0; i < 2 * num; i++) {
 			Bid bid = strategy.getRandomFromPValueList(pValueList);
 			double utility = utilitySpace.getUtility(bid);
-			if (utility < minThreshold)
-				minThreshold = utility;
-			if (utility > maxThreshold)
-				maxThreshold = utility;
+			if (utility < minThreshold) minThreshold = utility;
+			if (utility > maxThreshold) maxThreshold = utility;
 		}
-		averageThreshold = (minThreshold + maxThreshold)/2;
+		averageThreshold = (minThreshold + maxThreshold) / 2;
 		MyPrint.printThreshold(minThreshold, maxThreshold, averageThreshold);
 	}
 
@@ -110,7 +109,9 @@ public class MyNegotiationInfo {
 		for (Entry<Issue, List<MyValueFrequency>> issueValue : opponentFrequency.entrySet()) {
 			List<MyValueEvaluation> prefectValues = prefectOrder.get(issueValue.getKey());
 			double initial = 0.1d;
-			while((pValueList.get(issueValue.getKey()) == null || pValueList.get(issueValue.getKey()).size() <= Math.ceil(prefectValues.size()/5)) && initial <= 1){
+			while ((pValueList.get(issueValue.getKey()) == null
+					|| pValueList.get(issueValue.getKey()).size() <= Math.ceil(prefectValues.size() / 5))
+					&& initial <= 1) {
 				getSameValue(0, initial, issueValue, prefectValues);
 				initial += 0.1d;
 			}
@@ -118,7 +119,6 @@ public class MyNegotiationInfo {
 		MyPrint.printPValueList(pValueList);
 		getThreshold();
 	}
-
 
 	private void getSameValue(double startScale, double endScale, Entry<Issue, List<MyValueFrequency>> issueValue,
 			List<MyValueEvaluation> myValues) {
@@ -132,15 +132,14 @@ public class MyNegotiationInfo {
 					sameValues.add(oppentValues.get(i).getValue());
 			}
 		}
-		if (sameValues.size() == 0)
-			return;
+		if (sameValues.size() == 0) return;
 		pValueList.put(issueValue.getKey(), sameValues);
 	}
 
 	private Integer getStartIndex(double startScale, int size) {
 		return (int) Math.floor(startScale * (size - 1));
 	}
-	
+
 	private Integer getEndIndex(double endScale, int size) {
 		return (int) Math.floor(endScale * (size - 1));
 	}
@@ -208,5 +207,5 @@ public class MyNegotiationInfo {
 	public void setAverageThreshold(Double averageThreshold) {
 		this.averageThreshold = averageThreshold;
 	}
-	
+
 }

@@ -69,14 +69,13 @@ public class MyNegotiationStrategy {
 			return getMaxScoreBid(oppent1Info, oppent2Info, 1.0, minThre);
 		} else {
 			if (Double.parseDouble(oppent1Info.getDiffentTimesSummary() + "") / Double.parseDouble(round + "") < 0.01
-					|| (oppent2Info != null
-					&& Double.parseDouble(oppent2Info.getDiffentTimesSummary() + "") / Double.parseDouble(round + "")
-					< 0.01)) {
+					|| (oppent2Info != null && Double.parseDouble(oppent2Info.getDiffentTimesSummary() + "")
+							/ Double.parseDouble(round + "") < 0.01)) {
 				currentThreshold = 0.8;
 				return getMaxScoreBid(oppent1Info, oppent2Info, 1.0, 0.8);
 			} else {
 				double nashUtility = utilitySpace.getUtility(nashBid);
-				double maxUtility = 1 - (1 - nashUtility) * 0.85;
+				// double maxUtility = 1 - (1 - nashUtility) * 0.85;
 				double min = ((nashUtility - 1) / (1 - 0.95)) * time + (20 - 19 * nashUtility);
 				currentThreshold = min;
 				return getMaxScoreBid(oppent1Info, oppent2Info, 1.0, min);
@@ -105,39 +104,39 @@ public class MyNegotiationStrategy {
 		return lastBid;
 	}
 
-//	public void updateCurrentThreshold(Map<Issue, List<Value>> pValueList, Double time) {
-//		HashMap<Integer, Value> tempBidSeed = new HashMap<Integer, Value>();
-//		Bid tempBid;
-//		Double maxUtility = 0d;
-//		Double minUtility = 0d;
-//		Double tempUtility = 0d;
-//		Double targetUtility;
-//		Double totalUtility = 0d;
-//		Double averageUtility = 0d;
-//		for (int i = 0; i < pValueList.size(); i++) {
-//			for (Map.Entry<Issue, List<Value>> entry : pValueList.entrySet()) {
-//				for (int j = 0; j < entry.getValue().size(); j++) {
-//					tempBidSeed.put(entry.getKey().getNumber(), entry.getValue().get(j));
-//				}
-//			}
-//			tempBid = new Bid(utilitySpace.getDomain(), tempBidSeed);
-//			tempUtility = utilitySpace.getUtility(tempBid);
-//			totalUtility += tempUtility;
-//			if (tempUtility > maxUtility) {
-//				maxUtility = tempUtility;
-//			}
-//			if (tempUtility < minUtility) {
-//				minUtility = tempUtility;
-//			}
-//		}
-//		averageUtility = totalUtility / pValueList.size();
-//		/*targetUtility = (maxUtility - minUtility) * 0.75 + minUtility;
-//		if ((targetUtility - 1d) * time + 1 > averageUtility) {
-//			currentThreshold = (targetUtility - 1d) * time + 1 ;   //y=at+b
-//		}*/
-//		currentThreshold = (averageUtility - 1d) * time + 1d;
-//		System.out.println("avg: " + averageUtility + "current: " + currentThreshold);
-//	}
+	// public void updateCurrentThreshold(Map<Issue, List<Value>> pValueList, Double time) {
+	// HashMap<Integer, Value> tempBidSeed = new HashMap<Integer, Value>();
+	// Bid tempBid;
+	// Double maxUtility = 0d;
+	// Double minUtility = 0d;
+	// Double tempUtility = 0d;
+	// Double targetUtility;
+	// Double totalUtility = 0d;
+	// Double averageUtility = 0d;
+	// for (int i = 0; i < pValueList.size(); i++) {
+	// for (Map.Entry<Issue, List<Value>> entry : pValueList.entrySet()) {
+	// for (int j = 0; j < entry.getValue().size(); j++) {
+	// tempBidSeed.put(entry.getKey().getNumber(), entry.getValue().get(j));
+	// }
+	// }
+	// tempBid = new Bid(utilitySpace.getDomain(), tempBidSeed);
+	// tempUtility = utilitySpace.getUtility(tempBid);
+	// totalUtility += tempUtility;
+	// if (tempUtility > maxUtility) {
+	// maxUtility = tempUtility;
+	// }
+	// if (tempUtility < minUtility) {
+	// minUtility = tempUtility;
+	// }
+	// }
+	// averageUtility = totalUtility / pValueList.size();
+	// /*targetUtility = (maxUtility - minUtility) * 0.75 + minUtility;
+	// if ((targetUtility - 1d) * time + 1 > averageUtility) {
+	// currentThreshold = (targetUtility - 1d) * time + 1 ; //y=at+b
+	// }*/
+	// currentThreshold = (averageUtility - 1d) * time + 1d;
+	// System.out.println("avg: " + averageUtility + "current: " + currentThreshold);
+	// }
 
 	private Bid getMaxScoreBid(Set<Bid> possibleBids, OppentNegotiationInfo oppent1Info,
 			OppentNegotiationInfo oppent2Info) {
@@ -161,7 +160,7 @@ public class MyNegotiationStrategy {
 				maxBid = bid;
 				maxScore = scoreByBid;
 			}
-			//			System.out.println(bid + " score : " + scoreByBid);
+			// System.out.println(bid + " score : " + scoreByBid);
 
 		}
 		return maxBid;
